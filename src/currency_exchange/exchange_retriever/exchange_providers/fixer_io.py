@@ -7,12 +7,12 @@ from dateutil import parser
 from src.app.settings import API_KEY_FIXER
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
-from src.currency_exchange.exchange_retriever.exchange_retriever import \
-    ExchangeProvider
+from src.currency_exchange.exchange_retriever.exchange_provider import \
+    ExchangeProviderInterface
 from src.exceptions import ExchangeProviderError
 
 
-class FixerProvider(ExchangeProvider):
+class FixerProvider(ExchangeProviderInterface):
     endpoint = "http://data.fixer.io/api/{path}"
 
     def make_request(self, path, params):

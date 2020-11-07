@@ -5,8 +5,8 @@ from src.currency_exchange.exchange_retriever.exchange_providers.fixer_io import
     FixerProvider
 from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
-from src.currency_exchange.exchange_retriever.exchange_retriever import \
-    ExchangeRetriver
+from src.currency_exchange.exchange_retriever.exchange_provider import \
+    ExchangeProvider
 from src.exceptions import ExchangeCurrencyDoesNotExist, ExchangeProviderError
 
 
@@ -62,7 +62,7 @@ def get_exchange_rate_data(
         valuation_date,
         provider
         ):
-    exchange_response = ExchangeRetriver(provider).get(
+    exchange_response = ExchangeProvider(provider).get(
         source_currency,
         [exchanged_currency],
         valuation_date

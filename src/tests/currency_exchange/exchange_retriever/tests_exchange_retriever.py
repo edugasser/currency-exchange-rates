@@ -5,15 +5,15 @@ from mock import Mock
 
 from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
-from src.currency_exchange.exchange_retriever.exchange_retriever import \
-    ExchangeRetriver
+from src.currency_exchange.exchange_retriever.exchange_provider import \
+    ExchangeProvider
 
 
 class ExchangeRetrieverTestCase(TestCase):
 
     def setUp(self):
         self.provider = MockProvider()
-        self.retriver = ExchangeRetriver(self.provider)
+        self.retriver = ExchangeProvider(self.provider)
         self.today = datetime.date.today()
 
     def test_get_exchange_for_today(self):

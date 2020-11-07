@@ -4,11 +4,11 @@ import random
 
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
-from src.currency_exchange.exchange_retriever.exchange_retriever import \
-    ExchangeProvider
+from src.currency_exchange.exchange_retriever.exchange_provider import \
+    ExchangeProviderInterface
 
 
-class MockProvider(ExchangeProvider):
+class MockProvider(ExchangeProviderInterface):
 
     @staticmethod
     def build_response(success, _date, base, exchange_rates):

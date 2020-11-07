@@ -6,7 +6,7 @@ from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse
 
 
-class ExchangeProvider(object):
+class ExchangeProviderInterface(object):
 
     @abc.abstractmethod
     def get_latest(
@@ -26,9 +26,9 @@ class ExchangeProvider(object):
         pass
 
 
-class ExchangeRetriver(object):
+class ExchangeProvider(object):
 
-    def __init__(self, exchange_provider: ExchangeProvider):
+    def __init__(self, exchange_provider: ExchangeProviderInterface):
         self.exchange_provider = exchange_provider
 
     def get(
