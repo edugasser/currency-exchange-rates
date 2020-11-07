@@ -18,6 +18,8 @@ django-filter = "*"
 django-extensions = "*"
 django = "~=2.2"
 python-dateutil = "*"
+psycopg2-binary = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
