@@ -17,6 +17,7 @@ markdown = "*"
 django-filter = "*"
 django-extensions = "*"
 django = "~=2.2"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.8"

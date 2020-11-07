@@ -118,3 +118,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+API_KEY_FIXER = os.environ.get(
+    "API_KEY_FIXER",
+    "424e33448b9c83f539af66072d88c79d"
+)
