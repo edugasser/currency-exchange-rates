@@ -4,17 +4,6 @@ from src.currency_exchange.models import CurrencyExchangeRate, Provider
 from src.exceptions import ExchangeProviderError
 
 
-class CurrencyExchangeRepository:
-
-    @abc.abstractmethod
-    def get_active_provider(self):
-        pass
-
-    @abc.abstractmethod
-    def get(self, source_currency, exchanged_currency, valuation_date):
-        pass
-
-
 class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
 
     def get_active_provider(self):

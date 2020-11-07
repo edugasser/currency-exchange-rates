@@ -1,3 +1,5 @@
+import abc
+
 from src.currency_exchange.constants import TypeProvider
 from src.currency_exchange.exchange_retriever.exchange_providers.fixer_io import \
     FixerProvider
@@ -8,9 +10,20 @@ from src.currency_exchange.exchange_retriever.exchange_retriever import \
 from src.exceptions import ExchangeCurrencyDoesNotExist, ExchangeProviderError
 
 
+class CurrencyExchangeRepository:
+
+    @abc.abstractmethod
+    def get_active_provider(self):
+        pass
+
+    @abc.abstractmethod
+    def get(self, source_currency, exchanged_currency, valuation_date):
+        pass
+
+
 class RetrieveExchange(object):
 
-    def __init__(self, exchange_repository):
+    def __init__(self, exchange_repository: CurrencyExchangeRepository):
         self.exchange_repository = exchange_repository
 
     def obtain_active_provider(self):
@@ -49,8 +62,13 @@ def get_exchange_rate_data(
         valuation_date,
         provider
         ):
-    exchange_response = ExchangeRetriver(provider).run(
-        [source_currency],
+    exchange_response = ExchangeRetriver(provider).get(
+        source_currency,
+        [exchanged_currency],
         valuation_date
     )
-    return 10.
+    if not exchange_response.success:
+        raise ExchangeCurrencyDoesNotExist(
+            "The {source_currency} doesn't has exchange for {exchanged_currency}"  # noqa
+        )
+    return exchange_response.rates[0].rate
