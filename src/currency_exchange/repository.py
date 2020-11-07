@@ -2,7 +2,7 @@ from src.currency_exchange.models import CurrencyExchangeRate, Provider, \
     Currency
 from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     CurrencyExchangeRepository
-from src.exceptions import ExchangeProviderError
+from src.exceptions import ExchangeProviderError, ExchangeCurrencyDoesNotExist
 
 
 class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
@@ -17,7 +17,17 @@ class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
         return provider.code
 
     def get(self, source_currency, exchanged_currency, valuation_date):
-        return CurrencyExchangeRate.objects.all()
+        try:
+            exchange = CurrencyExchangeRate.objects.get(
+                source_currency__code=source_currency,
+                exchanged_currency__code=exchanged_currency,
+                valuation_date=valuation_date
+            )
+            return exchange.rate_value
+        except CurrencyExchangeRate.DoesNotExist:
+            raise ExchangeCurrencyDoesNotExist(
+                f"Exchanged currency doesn't exist {source_currency} to {exchanged_currency}"  # noqa
+            )
 
 
 currency_exchange_repository = CurrencyExchangeRepositoryDB()

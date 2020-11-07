@@ -37,6 +37,7 @@ class ConvertCurrency(object):
             origin_currency,
             target_currency
         )
+
         converted_amount = amount * rate if amount else 0.
         return converted_currency(
             origin_currency,
