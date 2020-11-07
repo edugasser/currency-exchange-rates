@@ -1,6 +1,6 @@
 from src.currency_exchange.models import CurrencyExchangeRate, Provider, \
     Currency
-from src.currency_exchange.use_cases.retrieve_exchange import \
+from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     CurrencyExchangeRepository
 from src.exceptions import ExchangeProviderError
 

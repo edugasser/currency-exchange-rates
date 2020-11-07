@@ -1,6 +1,6 @@
 from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
-from src.currency_exchange.use_cases.retrieve_exchange import \
+from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     CurrencyExchangeRepository
 
 

@@ -30,7 +30,7 @@ class CurrencyExchangeRepository:
         pass
 
 
-class RetrieveExchange(object):
+class RetrieveCurrencyExchange(object):
 
     def __init__(self, exchange_repository: CurrencyExchangeRepository):
         self.exchange_repository = exchange_repository
@@ -65,7 +65,10 @@ class RetrieveExchange(object):
                 f"Invalid provider: {provider_code}"
             )
 
-    def get(self, source_currency: str, exchanged_currency: str, valuation_date: date):  # noqa
+    def get(self, source_currency: str, exchanged_currency: str, valuation_date: date = None):  # noqa
+        if not valuation_date:
+            valuation_date = date.today()
+
         try:
             currency_rate = self.exchange_repository.get(
                 source_currency,

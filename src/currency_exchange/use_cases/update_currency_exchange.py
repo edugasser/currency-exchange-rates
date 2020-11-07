@@ -1,6 +1,6 @@
-from src.currency_exchange.use_cases.retrieve_exchange import RetrieveExchange
+from src.currency_exchange.use_cases.retrieve_currency_exchange import RetrieveCurrencyExchange
 
-from src.currency_exchange.use_cases.retrieve_exchange import \
+from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     CurrencyExchangeRepository
 
 
@@ -18,7 +18,7 @@ class UpdateExchange(object):
                 if source_currency == exchanged_currency:
                     continue
 
-                rate = RetrieveExchange.get_exchange_rate_data(
+                rate = RetrieveCurrencyExchange.get_exchange_rate_data(
                     source_currency,
                     exchanged_currency,
                     valuation_date,

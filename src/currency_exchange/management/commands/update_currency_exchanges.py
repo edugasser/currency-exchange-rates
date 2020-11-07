@@ -2,7 +2,7 @@ import datetime
 
 from django.core.management.base import BaseCommand
 
-from src.currency_exchange.use_cases.update_exchange import UpdateExchange
+from src.currency_exchange.use_cases.update_currency_exchange import UpdateExchange
 
 
 class UpdateCurrencyExchanges(BaseCommand):

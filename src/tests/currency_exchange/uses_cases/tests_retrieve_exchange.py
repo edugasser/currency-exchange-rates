@@ -7,7 +7,7 @@ from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
-from src.currency_exchange.use_cases.retrieve_exchange import RetrieveExchange
+from src.currency_exchange.use_cases.retrieve_currency_exchange import RetrieveCurrencyExchange
 from src.exceptions import ExchangeCurrencyDoesNotExist
 from src.tests.mock_repository import MockRepository
 
@@ -16,7 +16,7 @@ class RetrieveExchangeTestCase(TestCase):
 
     def setUp(self):
         self.repository = MockRepository()
-        self.retriever = RetrieveExchange(self.repository)
+        self.retriever = RetrieveCurrencyExchange(self.repository)
 
     def test_get_exchange_from_repository(self):
         # Given
