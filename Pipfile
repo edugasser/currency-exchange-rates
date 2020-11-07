@@ -10,6 +10,7 @@ pylint = "*"
 ipdb = "*"
 autopep8 = "*"
 coverage = "*"
+mock = "*"
 
 [packages]
 djangorestframework = "*"
