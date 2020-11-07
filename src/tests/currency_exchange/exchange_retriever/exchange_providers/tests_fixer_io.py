@@ -17,7 +17,7 @@ class FixerIoProviderTestCase(TestCase):
 
     def test_get_latest_no_currencies(self):
         with self.assertRaises(ExchangeProviderError):
-            self.provider.get_latest([])
+            self.provider.get_latest("EUR", [])
 
     def test_get_latest_with_currencies(self):
         # Given
@@ -35,7 +35,7 @@ class FixerIoProviderTestCase(TestCase):
         self.provider.make_request = request_mock
 
         # When
-        response = self.provider.get_latest(["EUR", "USD"])
+        response = self.provider.get_latest("UAD", ["EUR", "USD"])
 
         # Then
         expected_response = ExchangeResponse(
@@ -57,7 +57,7 @@ class FixerIoProviderTestCase(TestCase):
 
     def test_get_historical_with_no_currencies(self):
         with self.assertRaises(ExchangeProviderError):
-            self.provider.get_historical([], datetime.date.today())
+            self.provider.get_historical("EUR", [], datetime.date.today())
 
     def test_get_historical_with_currencies(self):
         # Given
@@ -76,6 +76,7 @@ class FixerIoProviderTestCase(TestCase):
 
         # When
         response = self.provider.get_historical(
+            "UAD",
             ["EUR", "USD"],
             datetime.date.today()
         )

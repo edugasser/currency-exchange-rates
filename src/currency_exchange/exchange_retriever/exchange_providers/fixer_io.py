@@ -42,21 +42,36 @@ class FixerProvider(ExchangeProvider):
             rates
         )
 
-    def get_latest(self, currencies: List[str]) -> ExchangeResponse:
-        if not currencies:
+    def get_latest(
+        self,
+        currency,
+        exchanged_currencies: List[str]
+    ) -> ExchangeResponse:
+        if not exchanged_currencies:
             raise ExchangeProviderError(
                 f"No currencienns provided"
             )
-        params = {"symbols": ",".join(currencies)}
+        params = {
+            "base": currency,
+            "symbols": ",".join(exchanged_currencies)
+        }
         response = self.make_request("latest", params)
         return self.transform_response(response)
 
-    def get_historical(self, currencies: List[str], valuation_date: date) -> ExchangeResponse:  # noqa
-        if not currencies:
+    def get_historical(
+        self,
+        currency,
+        exchanged_currencies: List[str],
+        valuation_date: date
+    ) -> ExchangeResponse:
+        if not exchanged_currencies:
             raise ExchangeProviderError(
-                f"No currencies provided"
+                f"No exchanged_currencies provided"
             )
-        params = {"symbols": ",".join(currencies)}
+        params = {
+            "base": currency,
+            "symbols": ",".join(exchanged_currencies)
+        }
         response = self.make_request(
             valuation_date.strftime("%Y-%m-%d"),
             params
