@@ -34,10 +34,23 @@ class RetrieveExchange(object):
             )
         except ExchangeCurrencyDoesNotExist:
             provider = self.obtain_active_provider()
-            exchange_response = ExchangeRetriver(provider).run(
-                [source_currency],
-                valuation_date
+            currency_rate = get_exchange_rate_data(
+                source_currency,
+                exchanged_currency,
+                valuation_date,
+                provider
             )
-            # TODO:
-            currency_rate = 10
         return currency_rate
+
+
+def get_exchange_rate_data(
+        source_currency,
+        exchanged_currency,
+        valuation_date,
+        provider
+        ):
+    exchange_response = ExchangeRetriver(provider).run(
+        [source_currency],
+        valuation_date
+    )
+    return 10.
