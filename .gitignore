@@ -1,0 +1,8 @@
+*.swp
+*.eggs
+*.pyc
+*.pyd
+*.pyo
+*~
+.cache
+.idea
