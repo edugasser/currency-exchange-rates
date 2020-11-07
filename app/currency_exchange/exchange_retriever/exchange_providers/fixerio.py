@@ -1,11 +1,14 @@
+from datetime import date
 from typing import List
-from dateutil import parser
+
 import requests
+from dateutil import parser
 
 from app.app.settings import API_KEY_FIXER
 from app.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
-from app.currency_exchange.exchange_retriever.exchange_retriever import ExchangeProvider
+from app.currency_exchange.exchange_retriever.exchange_retriever import \
+    ExchangeProvider
 from app.exceptions import ExchangeProviderError
 
 
@@ -40,9 +43,14 @@ class FixerProvider(ExchangeProvider):
         )
 
     def get_latest(self, currencies: List[str]) -> ExchangeResponse:
-        response = self.make_request("latest", ",".join(currencies))
+        params = {"symbols": ",".join(currencies)}
+        response = self.make_request("latest", params)
         return self.transform_response(response)
 
-    def get_historical(self, exchange_date) -> ExchangeResponse:
-        response = self.make_request(exchange_date.strftime("%Y-%m-%d"))
+    def get_historical(self, currencies: List[str], valuation_date: date) -> ExchangeResponse:  # noqa
+        params = {"symbols": ",".join(currencies)}
+        response = self.make_request(
+            valuation_date.strftime("%Y-%m-%d"),
+            params
+        )
         return self.transform_response(response)

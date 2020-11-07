@@ -1,6 +1,20 @@
 from django.db import models
 
 
+class Provider(models.Model):
+    class TypeProvider(models.TextChoices):
+        FIXER_IO = 'FIXER', 'Fixer Io'
+        MOCK = 'MOCK', 'Mock'
+
+    provider = models.CharField(
+        max_length=5,
+        choices=TypeProvider.choices,
+        default=TypeProvider.MOCK
+    )
+    order = models.PositiveSmallIntegerField()
+    config = models.JSONField(blank=True)
+
+
 class Currency(models.Model):
     code = models.CharField(max_length=3, unique=True)
     name = models.CharField(max_length=20, db_index=True)
