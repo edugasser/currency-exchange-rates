@@ -3,23 +3,13 @@ import datetime
 from django.test import TestCase
 from mock import Mock
 
-from src.currency_exchange.constants import TypeProvider
 from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
-from src.currency_exchange.use_cases.retrieve_exchange import RetrieveExchange, \
-    CurrencyExchangeRepository
+from src.currency_exchange.use_cases.retrieve_exchange import RetrieveExchange
 from src.exceptions import ExchangeCurrencyDoesNotExist
-
-
-class MockRepository(CurrencyExchangeRepository):
-
-    def get_active_provider(self):
-        return TypeProvider.MOCK
-
-    def get(self, source_currency, exchanged_currency, valuation_date):
-        return 10.
+from src.tests.mock_repository import MockRepository
 
 
 class RetrieveExchangeTestCase(TestCase):

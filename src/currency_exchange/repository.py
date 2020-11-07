@@ -1,10 +1,14 @@
-import abc
-
-from src.currency_exchange.models import CurrencyExchangeRate, Provider
+from src.currency_exchange.models import CurrencyExchangeRate, Provider, \
+    Currency
+from src.currency_exchange.use_cases.retrieve_exchange import \
+    CurrencyExchangeRepository
 from src.exceptions import ExchangeProviderError
 
 
 class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
+
+    def get_all_currencies(self):
+        return Currency.objects.all().values_list('code', flat=True)
 
     def get_active_provider(self):
         provider = Provider.objects.order_by('order').first()
