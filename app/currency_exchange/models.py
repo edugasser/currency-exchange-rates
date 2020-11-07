@@ -1,11 +1,9 @@
 from django.db import models
 
+from app.currency_exchange.constants import TypeProvider
+
 
 class Provider(models.Model):
-    class TypeProvider(models.TextChoices):
-        FIXER_IO = 'FIXER', 'Fixer Io'
-        MOCK = 'MOCK', 'Mock'
-
     provider = models.CharField(
         max_length=5,
         choices=TypeProvider.choices,
