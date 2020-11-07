@@ -25,3 +25,6 @@ class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
 
     def get(self, source_currency, exchanged_currency, valuation_date):
         return CurrencyExchangeRate.objects.all()
+
+
+currency_exchange_repository = CurrencyExchangeRepositoryDB()
