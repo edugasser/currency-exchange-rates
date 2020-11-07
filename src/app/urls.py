@@ -14,11 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.urls import include
 from django.urls import path
-import sys, os
-#sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-#print("=== ", sys.path)
-from src.exceptions import ExchangeProviderError
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include("api.urls")),
 ]
