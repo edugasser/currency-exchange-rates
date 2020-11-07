@@ -9,7 +9,7 @@ from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
 from src.currency_exchange.use_cases.retrieve_exchange import RetrieveExchange, \
-    CurrencyExchangeRepository, get_exchange_rate_data
+    CurrencyExchangeRepository
 from src.exceptions import ExchangeCurrencyDoesNotExist
 
 
@@ -73,7 +73,7 @@ class RetrieveExchangeTestCase(TestCase):
 
         # When
         with self.assertRaises(ExchangeCurrencyDoesNotExist):
-            get_exchange_rate_data(
+            self.retriever.get_exchange_rate_data(
                 "EUR",
                 "USD",
                 datetime.date.today(),
@@ -93,7 +93,7 @@ class RetrieveExchangeTestCase(TestCase):
         provider.get_latest = Mock(return_value=mock_response)
 
         # When
-        result = get_exchange_rate_data(
+        result = self.retriever.get_exchange_rate_data(
             "EUR",
             "USD",
             datetime.date.today(),

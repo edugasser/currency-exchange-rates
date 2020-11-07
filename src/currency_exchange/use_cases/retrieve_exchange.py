@@ -47,7 +47,7 @@ class RetrieveExchange(object):
             )
         except ExchangeCurrencyDoesNotExist:
             provider = self.obtain_active_provider()
-            currency_rate = get_exchange_rate_data(
+            currency_rate = self.get_exchange_rate_data(
                 source_currency,
                 exchanged_currency,
                 valuation_date,
@@ -55,20 +55,20 @@ class RetrieveExchange(object):
             )
         return currency_rate
 
-
-def get_exchange_rate_data(
+    @staticmethod
+    def get_exchange_rate_data(
         source_currency,
         exchanged_currency,
         valuation_date,
         provider
-        ):
-    exchange_response = ExchangeProvider(provider).get(
-        source_currency,
-        [exchanged_currency],
-        valuation_date
-    )
-    if not exchange_response.success:
-        raise ExchangeCurrencyDoesNotExist(
-            "The {source_currency} doesn't has exchange for {exchanged_currency}"  # noqa
+    ):
+        exchange_response = ExchangeProvider(provider).get(
+            source_currency,
+            [exchanged_currency],
+            valuation_date
         )
-    return exchange_response.rates[0].rate
+        if not exchange_response.success:
+            raise ExchangeCurrencyDoesNotExist(
+                "The {source_currency} doesn't has exchange for {exchanged_currency}"  # noqa
+            )
+        return exchange_response.rates[0].rate
