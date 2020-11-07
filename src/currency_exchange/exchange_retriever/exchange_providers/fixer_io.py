@@ -44,7 +44,7 @@ class FixerProvider(ExchangeProviderInterface):
 
     def get_latest(
         self,
-        currency,
+        currency: str,
         exchanged_currencies: List[str]
     ) -> ExchangeResponse:
         if not exchanged_currencies:
@@ -60,7 +60,7 @@ class FixerProvider(ExchangeProviderInterface):
 
     def get_historical(
         self,
-        currency,
+        currency: str,
         exchanged_currencies: List[str],
         valuation_date: date
     ) -> ExchangeResponse:

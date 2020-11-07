@@ -11,7 +11,7 @@ class ExchangeProviderInterface(object):
     @abc.abstractmethod
     def get_latest(
         self,
-        currency,
+        currency: str,
         exchanged_currencies: List[str]
     ) -> ExchangeResponse:
         pass
@@ -19,7 +19,7 @@ class ExchangeProviderInterface(object):
     @abc.abstractmethod
     def get_historical(
         self,
-        currency,
+        currency: str,
         exchanged_currencies: List[str],
         valuation_date: date
     ) -> ExchangeResponse:
@@ -33,13 +33,16 @@ class ExchangeProvider(object):
 
     def get(
         self,
-        currency,
+        currency: str,
         exchanged_currencies: List[str],
         valuation_date: date
     ) -> ExchangeResponse:
 
         if valuation_date == date.today():
-            response = self.exchange_provider.get_latest(currency, exchanged_currencies)  # noqa
+            response = self.exchange_provider.get_latest(
+                currency,
+                exchanged_currencies
+            )
         else:
             response = self.exchange_provider.get_historical(
                 currency,
