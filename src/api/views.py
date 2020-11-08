@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from src.api.serializers import \
     CurrencyConvertResponse, TwrResponse, \
     TwrRequest, ListCurrencyExchangeResponse
-from src.currency_exchange.constants import DecimalPrecission
 from src.currency_exchange.models import CurrencyExchangeRate
 from src.currency_exchange.repository import currency_exchange_repository
 from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
