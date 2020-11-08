@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from src.api.serializers import \
     CurrencyExchangeRateSerializer, CurrencyConvertResponse, TwrResponse, \
-    TwrRequest
+    TwrRequest, ListCurrencyExchangeResponse
 from src.currency_exchange.models import CurrencyExchangeRate
 from src.currency_exchange.repository import currency_exchange_repository
 from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
@@ -41,8 +41,9 @@ class CurrencyExchangeRateView(ListAPIView):
 
     def build_node(self, origin, target, day):
         return {
-            "source_currency": origin,
+            "origin_currency": origin,
             "target_currency": target,
+            "valuation_date": day.date(),
             "rate_value": self.retriever.get(
                 origin,
                 target,
@@ -50,20 +51,20 @@ class CurrencyExchangeRateView(ListAPIView):
             )
         }
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, origin, *args, **kwargs):
         date_from, date_to = self.validate_params(request.GET)
 
         result = []
         for day in iter_days(date_from, date_to):
-            for origin in self.currencies:
-                for target in self.currencies:
-                    if origin == target:
-                        continue
-                    result.append(
-                        self.build_node(origin, target, day)
-                    )
-
-        return Response(result)
+            for target in self.currencies:
+                if origin == target:
+                    continue
+                result.append(
+                    self.build_node(origin, target, day)
+                )
+        response = ListCurrencyExchangeResponse(data=result, many=True)
+        response.is_valid()
+        return Response(response.data)
 
 
 class ConvertCurrencyView(RetrieveAPIView):

@@ -24,6 +24,13 @@ class CurrencyConvertResponse(serializers.Serializer):
     target_currency = serializers.CharField()
 
 
+class ListCurrencyExchangeResponse(serializers.Serializer):
+    origin_currency = serializers.CharField()
+    target_currency = serializers.CharField()
+    valuation_date = serializers.DateField()
+    rate_value = serializers.DecimalField(decimal_places=6, max_digits=18)
+
+
 class TwrResponse(serializers.Serializer):
     origin_currency = serializers.CharField()
     target_currency = serializers.CharField()
