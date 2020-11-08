@@ -6,17 +6,13 @@ from dateutil.rrule import rrule, DAILY
 from src.currency_exchange.repository import CurrencyExchangeRepository
 from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     RetrieveCurrencyExchange
+from src.utils import iter_days
 
 
 class RetrieveTWR(object):
 
     def __init__(self, currency_exchange_repo: CurrencyExchangeRepository):
         self.retriever = RetrieveCurrencyExchange(currency_exchange_repo)
-
-    @staticmethod
-    def iter_days(start):
-        for day in rrule(DAILY, dtstart=start, until=date.today()):
-            yield day
 
     def run(
         self,
@@ -29,7 +25,7 @@ class RetrieveTWR(object):
         rate = self.retriever.get(source_currency, target_currency, date_invested)  # noqa
         initial_value = rate * amount
 
-        for day in self.iter_days(date_invested+timedelta(days=1)):
+        for day in iter_days(date_invested+timedelta(days=1), date.today()):
             rate = self.retriever.get(source_currency, target_currency, day)
             end_value = rate * amount
             hp = ((end_value - initial_value) / initial_value) * 100

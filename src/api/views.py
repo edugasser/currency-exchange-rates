@@ -1,6 +1,8 @@
+import json
 from decimal import Decimal
 
 from dateutil.parser import parse
+from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
@@ -11,12 +13,20 @@ from src.api.serializers import \
 from src.currency_exchange.models import CurrencyExchangeRate
 from src.currency_exchange.repository import currency_exchange_repository
 from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
+from src.currency_exchange.use_cases.retrieve_currency_exchange import \
+    RetrieveCurrencyExchange
 from src.currency_exchange.use_cases.retrieve_twr import RetrieveTWR
 from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist
+from src.utils import iter_days
 
 
 class CurrencyExchangeRateView(ListAPIView):
     queryset = CurrencyExchangeRate.objects.all()
+
+    def __init__(self, **kwargs):
+        super(CurrencyExchangeRateView, self).__init__(**kwargs)
+        self.retriever = RetrieveCurrencyExchange(currency_exchange_repository)
+        self.currencies = currency_exchange_repository.get_all_currencies()
 
     @staticmethod
     def validate_params(params):
@@ -29,13 +39,31 @@ class CurrencyExchangeRateView(ListAPIView):
             )
         return date_from, date_to
 
+    def build_node(self, origin, target, day):
+        return {
+            "source_currency": origin,
+            "target_currency": target,
+            "rate_value": self.retriever.get(
+                origin,
+                target,
+                day
+            )
+        }
+
     def list(self, request, *args, **kwargs):
         date_from, date_to = self.validate_params(request.GET)
-        queryset = CurrencyExchangeRate.objects.in_dates(
-            date_from, date_to
-        ).select_related("source_currency", "exchanged_currency")
-        serializer = CurrencyExchangeRateSerializer(queryset, many=True)
-        return Response(serializer.data)
+
+        result = []
+        for day in iter_days(date_from, date_to):
+            for origin in self.currencies:
+                for target in self.currencies:
+                    if origin == target:
+                        continue
+                    result.append(
+                        self.build_node(origin, target, day)
+                    )
+
+        return Response(result)
 
 
 class ConvertCurrencyView(RetrieveAPIView):
