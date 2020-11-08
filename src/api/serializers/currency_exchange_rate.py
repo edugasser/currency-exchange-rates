@@ -18,7 +18,22 @@ class CurrencyExchangeRateSerializer(serializers.ModelSerializer):
 
 
 class CurrencyConvertResponse(serializers.Serializer):
-    amount = serializers.DecimalField(max_digits=3, decimal_places=6)
-    converted_amount = serializers.DecimalField(max_digits=3, decimal_places=6)
+    amount = serializers.DecimalField(decimal_places=6, max_digits=18)
+    converted_amount = serializers.DecimalField(decimal_places=6, max_digits=18)  # noqa
     origin_currency = serializers.CharField()
     target_currency = serializers.CharField()
+
+
+class TwrResponse(serializers.Serializer):
+    origin_currency = serializers.CharField()
+    target_currency = serializers.CharField()
+    amount = serializers.DecimalField(decimal_places=6, max_digits=18)
+    twr = serializers.DecimalField(decimal_places=6, max_digits=18)
+    date_invested = serializers.DateField()
+
+
+class TwrRequest(serializers.Serializer):
+    origin_currency = serializers.CharField()
+    target_currency = serializers.CharField()
+    amount = serializers.DecimalField(decimal_places=6, max_digits=18)
+    date_invested = serializers.DateField()

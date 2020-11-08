@@ -36,10 +36,10 @@ class RetrieveExchangeTestCase(TestCase):
 
     def test_get_exchange_from_provider(self):
         # Given
-        self.repository.get = Mock(side_effect=ExchangeCurrencyDoesNotExist("test"))
-        self.retriever.obtain_active_provider = Mock(
-            return_value=MockProvider()
-        )
+        self.repository.get = Mock(side_effect=ExchangeCurrencyDoesNotExist("test"))  # noqa
+        self.retriever.obtain_active_provider = Mock()
+        self.retriever.obtain_active_provider.get.return_value = MockProvider()
+
         valuation_date = datetime.date.today()
 
         # When
@@ -47,7 +47,7 @@ class RetrieveExchangeTestCase(TestCase):
 
         # Then
         self.assertEqual(True, isinstance(rate, float))
-        self.retriever.obtain_active_provider.assert_called_once_with()
+        self.retriever.obtain_active_provider.get.assert_called_once_with()
 
     def test_get_exchange_rate_data_with_unsuccesful_response(self):
         # Given

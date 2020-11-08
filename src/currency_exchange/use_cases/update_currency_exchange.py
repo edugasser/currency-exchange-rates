@@ -1,14 +1,14 @@
-from src.currency_exchange.use_cases.retrieve_currency_exchange import RetrieveCurrencyExchange
-
+from src.currency_exchange.use_cases.obtain_active_provider import \
+    ObtainActiveProvider
 from src.currency_exchange.use_cases.retrieve_currency_exchange import \
-    CurrencyExchangeRepository
+    CurrencyExchangeRepository, RetrieveCurrencyExchange
 
 
 class UpdateExchange(object):
 
     def __init__(self, exchange_repository: CurrencyExchangeRepository):
         self.exchange_repository = exchange_repository
-        self.provider = self.exchange_repository.get_active_provider()
+        self.provider = ObtainActiveProvider(exchange_repository).get()
 
     def update_all(self, valuation_date):
         currencies = self.exchange_repository.get_all_currencies()

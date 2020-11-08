@@ -1,20 +1,22 @@
 from decimal import Decimal
 
-from dateutil.parser import parse, ParserError
+from dateutil.parser import parse
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from src.api.serializers.currency_exchange_rate import \
-    CurrencyExchangeRateSerializer, CurrencyConvertResponse
+    CurrencyExchangeRateSerializer, CurrencyConvertResponse, TwrResponse, \
+    TwrRequest
 from src.currency_exchange.models import CurrencyExchangeRate
+from src.currency_exchange.repository import currency_exchange_repository
 from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
+from src.currency_exchange.use_cases.retrieve_twr import RetrieveTWR
 from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist
 
 
 class CurrencyExchangeRateView(ListAPIView):
     queryset = CurrencyExchangeRate.objects.all()
-    # permission_classes = [IsAuthenticated]
 
     @staticmethod
     def validate_params(params):
@@ -29,14 +31,15 @@ class CurrencyExchangeRateView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         date_from, date_to = self.validate_params(request.GET)
-        queryset = CurrencyExchangeRate.objects.in_dates(date_from, date_to)
+        queryset = CurrencyExchangeRate.objects.in_dates(
+            date_from, date_to
+        ).select_related("source_currency", "exchanged_currency")
         serializer = CurrencyExchangeRateSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
 class ConvertCurrencyView(RetrieveAPIView):
     queryset = CurrencyExchangeRate.objects.all()
-    # permission_classes = [IsAuthenticated]
 
     def retrieve(self, request, origin, target, *args, **kwargs):
         params = request.GET
@@ -64,5 +67,42 @@ class ConvertCurrencyView(RetrieveAPIView):
             "origin_currency": currency_converted.origin,
             "target_currency": currency_converted.target
         })
+        response.is_valid()
+        return Response(response.data)
+
+
+class TimeWeightedRateView(RetrieveAPIView):
+    queryset = CurrencyExchangeRate.objects.all()
+
+    def retrieve(self, request, origin, target, date_invested,  *args, **kwargs):  # noqa
+
+        twr_request = TwrRequest(data={
+            "origin_currency": origin,
+            "target_currency": target,
+            "date_invested": date_invested,
+            "amount": request.GET.get("amount")
+        })
+
+        if not twr_request.is_valid():
+            raise serializers.ValidationError(
+                twr_request.errors
+            )
+        params = twr_request.data
+
+        twr = RetrieveTWR(currency_exchange_repository).run(
+            params["origin_currency"],
+            params["target_currency"],
+            Decimal(params["amount"]),
+            parse(params["date_invested"])
+        )
+
+        response = TwrResponse(data={
+            "origin_currency": params["origin_currency"],
+            "target_currency": params["target_currency"],
+            "date_invested": params["date_invested"],
+            "amount": params["amount"],
+            "twr": twr
+        })
+
         response.is_valid()
         return Response(response.data)

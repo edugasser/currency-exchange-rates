@@ -8,6 +8,11 @@ class ExchangeCurrencyDoesNotExist(Exception):
         self.error = error
 
 
+class ExchangeCurrencyError(Exception):
+    def __init__(self, error: str):
+        self.error = error
+
+
 class CurrencyDoesNotExist(Exception):
     def __init__(self, error: str):
         self.error = error

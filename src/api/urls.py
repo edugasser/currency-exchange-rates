@@ -5,8 +5,21 @@ from src.api import views
 
 router = routers.DefaultRouter()
 
-# Define routes
+
 urlpatterns = [
-    path('currency-rates/', views.CurrencyExchangeRateView.as_view(), name='currency-rates'),  # noqa
-    path('convert-currency/<str:origin>/<str:target>/', views.ConvertCurrencyView.as_view(), name='convert-currency')  # noqa
+    path(
+        'currency-rates/',
+        views.CurrencyExchangeRateView.as_view(),
+        name='currency-rates'
+    ),
+    path(
+        'convert-currency/<str:origin>/<str:target>/',
+        views.ConvertCurrencyView.as_view(),
+        name='convert-currency'
+    ),
+    path(
+        'twr/<str:origin>/<str:target>/<str:date_invested>/',
+        views.TimeWeightedRateView.as_view(),
+        name='retrieve-twr'
+    )
 ]

@@ -1,6 +1,6 @@
 import abc
-from typing import List
 from datetime import date
+from typing import List
 
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse

@@ -1,8 +1,8 @@
-import json
-from datetime import datetime, timedelta, date
+import urllib
+from datetime import timedelta, date
 
 from rest_framework.test import APITestCase
-import urllib
+
 from src.currency_exchange.models import Currency, CurrencyExchangeRate
 
 
@@ -50,13 +50,13 @@ class CurrencyExchangeRateTestCase(APITestCase):
             {
                 'source_currency': 'USD',
                 'exchanged_currency': 'EUR',
-                'valuation_date': '2020-11-06',
+                'valuation_date': self.yesterday.strftime("%Y-%m-%d"),
                 'rate_value': '0.400000'
             },
             {
                 'source_currency': 'EUR',
                 'exchanged_currency': 'USD',
-                'valuation_date': '2020-11-07',
+                'valuation_date': self.today.strftime("%Y-%m-%d"),
                 'rate_value': '1.300000'
             }
         ]
