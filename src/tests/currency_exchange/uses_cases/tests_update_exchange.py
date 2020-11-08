@@ -3,7 +3,7 @@ import datetime
 from django.test import TestCase
 from mock import patch, Mock, call
 
-from src.currency_exchange.use_cases.update_currency_exchange import UpdateExchange
+from src.currency_exchange.use_cases.update_currency_exchange_rate import UpdateCurrencyExchangeRate
 from src.tests.mock_repository import MockRepository
 
 
@@ -11,7 +11,7 @@ class UpdateExchangeTestCase(TestCase):
 
     def setUp(self):
         self.repository = MockRepository()
-        self.updater = UpdateExchange(self.repository)
+        self.updater = UpdateCurrencyExchangeRate(self.repository)
 
     @patch('src.currency_exchange.use_cases.retrieve_currency_exchange.RetrieveCurrencyExchange.get_exchange_rate_data')  # noqa
     def test_update_all_currencies(self, get_exchange_rate_data):

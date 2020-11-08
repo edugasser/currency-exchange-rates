@@ -1,8 +1,8 @@
-import json
-from datetime import datetime, timedelta, date
+import urllib
+from datetime import date
 
 from rest_framework.test import APITestCase
-import urllib
+
 from src.currency_exchange.models import Currency, CurrencyExchangeRate
 
 
@@ -72,7 +72,7 @@ class CurrencyConvertTestCase(APITestCase):
         # When
         response = self.client.get(endpoint)
         data = response.json()
-
+        print(data)
         # Then
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data, expected)

@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
-from .constants import TypeProvider
+from .constants import TypeProvider, DecimalPrecission
 
 
 class Provider(models.Model):
@@ -38,8 +38,8 @@ class CurrencyExchangeRate(models.Model):
     exchanged_currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     valuation_date = models.DateField(db_index=True)
     rate_value = models.DecimalField(
-        decimal_places=6,
-        max_digits=18
+        decimal_places=DecimalPrecission.DECIMAL_PLACES,
+        max_digits=DecimalPrecission.MAX_DIGITS
     )
 
     def __str__(self):
