@@ -74,14 +74,31 @@ class ListCurrencyExchangeRateView(ListAPIView):
 class ConvertCurrencyView(RetrieveAPIView):
     queryset = CurrencyExchangeRate.objects.all()
 
-    def retrieve(self, request, version, origin, target, *args, **kwargs):
-        params = request.GET
+    @staticmethod
+    def clean_params(params):
         amount = params.get("amount")
-
         if not amount:
             raise serializers.ValidationError(
                 f"Required GET param 'amount'"
             )
+        return Decimal(amount)
+
+    @staticmethod
+    def build_response(currency_converted):
+        response = CurrencyConvertResponse(data={
+            "converted_amount": currency_converted.converted_amount,
+            "origin_currency": currency_converted.origin,
+            "target_currency": currency_converted.target,
+            "amount": currency_converted.amount
+        })
+
+        if not response.is_valid():
+            raise serializers.ValidationError(response.errors)
+
+        return response.data
+
+    def retrieve(self, request, version, origin, target, *args, **kwargs):
+        amount = self.clean_params(request.GET)
 
         try:
             currency_converted = ConvertCurrency(
@@ -96,17 +113,8 @@ class ConvertCurrencyView(RetrieveAPIView):
                 f"An error occurred while converting currency: {e}"
             )
 
-        response = CurrencyConvertResponse(data={
-            "converted_amount": currency_converted.converted_amount,
-            "origin_currency": currency_converted.origin,
-            "target_currency": currency_converted.target,
-            "amount": currency_converted.amount
-        })
-
-        if not response.is_valid():
-            raise serializers.ValidationError(response.errors)
-
-        return Response(response.data)
+        response = self.build_response(currency_converted)
+        return Response(response)
 
 
 class TimeWeightedRateView(RetrieveAPIView):

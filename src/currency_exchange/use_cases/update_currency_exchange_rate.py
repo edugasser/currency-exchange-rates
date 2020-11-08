@@ -5,6 +5,7 @@ from src.currency_exchange.exchange_retriever.exchange_factory_provider import \
 from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
     CurrencyExchangeRepository, RetrieveCurrencyExchangeRate
 from src.exceptions import ExchangeCurrencyDoesNotExist, ExchangeCurrencyError
+from src.logger import logger, _
 
 
 class UpdateCurrencyExchangeRate(object):
@@ -46,5 +47,10 @@ class UpdateCurrencyExchangeRate(object):
             try:
                 self.update(source_currency, exchanged_currency, valuation_date)  # noqa
             except (ExchangeCurrencyDoesNotExist, ExchangeCurrencyError) as e:
-                # TODO: logging
-                pass
+                logger.error(
+                    _(
+                        "Update all",
+                        valuation_date=valuation_date,
+                        error=str(e)
+                      )
+                )

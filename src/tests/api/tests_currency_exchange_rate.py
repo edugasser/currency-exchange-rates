@@ -9,7 +9,7 @@ from src.currency_exchange.models import Currency, CurrencyExchangeRate, \
 
 
 class CurrencyExchangeRateTestCase(APITestCase):
-    url = "/api/v1/currency-rates/{origin}/{from_date}/{to_date}/"
+    url = "/api/v1/historical/{origin}/{from_date}/{to_date}/"
 
     def setUp(self):
         Provider.objects.create(provider=TypeProvider.MOCK, default=True)

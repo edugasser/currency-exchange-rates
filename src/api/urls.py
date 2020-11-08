@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     re_path(
-        r'^(?P<version>(v1))/currency-rates/'
+        r'^(?P<version>(v1))/historical/'
         r'(?P<origin>[A-Z]+)/'
         r'(?P<start>[0-9]{4}-[0-9]{2}-[0-9]{2})/'
         r'(?P<end>[0-9]{4}-[0-9]{2}-[0-9]{2})/',

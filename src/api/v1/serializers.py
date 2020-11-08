@@ -36,8 +36,8 @@ class CurrencyConvertResponse(serializers.Serializer):
             raise serializers.ValidationError(
                 "The field amount must be greather than 0"
             )
+        return attrs
 
-        
 class ListCurrencyExchangeResponse(serializers.Serializer):
     origin_currency = serializers.CharField()
     target_currency = serializers.CharField()
@@ -64,3 +64,4 @@ class TwrRequest(serializers.Serializer):
             raise serializers.ValidationError(
                 "The field amount must be greather than 0"
             )
+        return attrs

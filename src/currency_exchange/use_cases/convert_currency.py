@@ -32,12 +32,14 @@ class ConvertCurrency(object):
 
     def convert(self, origin_currency: str, amount: Decimal,  target_currency: str):  # noqa
         self.validate_currencies(origin_currency, target_currency)
+
         rate = self.retrieve_currency_exchange.get(
             origin_currency,
             target_currency
         )
 
         converted_amount = round_decimal(amount * rate if amount else 0.)
+
         return converted_currency(
             origin_currency,
             target_currency,
