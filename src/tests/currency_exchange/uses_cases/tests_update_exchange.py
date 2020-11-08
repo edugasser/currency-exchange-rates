@@ -14,7 +14,7 @@ class UpdateExchangeTestCase(TestCase):
         self.repository = MockRepository()
         self.updater = UpdateCurrencyExchangeRate(self.repository)
 
-    @patch('src.currency_exchange.use_cases.retrieve_currency_exchange.RetrieveCurrencyExchange.get_exchange_rate_data')  # noqa
+    @patch('src.currency_exchange.use_cases.retrieve_currency_exchange_rate.RetrieveCurrencyExchangeRate.get_exchange_rate_data')  # noqa
     def test_update_all_currencies(self, get_exchange_rate_data):
         # Given
         get_exchange_rate_data.return_value = 10

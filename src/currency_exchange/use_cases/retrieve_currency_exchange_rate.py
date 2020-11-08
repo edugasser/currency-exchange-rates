@@ -1,20 +1,20 @@
 from datetime import date
 from decimal import Decimal
 
+from src.currency_exchange.exchange_retriever.exchange_factory_provider import \
+    ExchangeFactoryProvider
 from src.currency_exchange.exchange_retriever.exchange_provider import \
     ExchangeProvider
 from src.currency_exchange.repository import CurrencyExchangeRepository
-from src.currency_exchange.use_cases.obtain_active_provider import \
-    ObtainActiveProvider
 from src.exceptions import ExchangeCurrencyDoesNotExist
 from src.utils import round_decimal
 
 
-class RetrieveCurrencyExchange(object):
+class RetrieveCurrencyExchangeRate(object):
 
     def __init__(self, exchange_repository: CurrencyExchangeRepository):
         self.exchange_repository = exchange_repository
-        self.obtain_active_provider = ObtainActiveProvider(exchange_repository)
+        self.factory_provider = ExchangeFactoryProvider(exchange_repository)
 
     @staticmethod
     def get_exchange_rate_data(
@@ -50,7 +50,7 @@ class RetrieveCurrencyExchange(object):
                 valuation_date
             )
         except ExchangeCurrencyDoesNotExist:
-            provider = self.obtain_active_provider.get()
+            provider = self.factory_provider.get()
             currency_rate = self.get_exchange_rate_data(
                 source_currency,
                 exchanged_currency,

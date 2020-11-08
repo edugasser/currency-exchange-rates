@@ -12,8 +12,8 @@ from src.currency_exchange.constants import DecimalPrecission
 from src.currency_exchange.models import CurrencyExchangeRate
 from src.currency_exchange.repository import currency_exchange_repository
 from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
-from src.currency_exchange.use_cases.retrieve_currency_exchange import \
-    RetrieveCurrencyExchange
+from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
+    RetrieveCurrencyExchangeRate
 from src.currency_exchange.use_cases.retrieve_twr import RetrieveTWR
 from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist
 from src.utils import iter_days
@@ -24,7 +24,7 @@ class ListCurrencyExchangeRateView(ListAPIView):
 
     def __init__(self, **kwargs):
         super(ListCurrencyExchangeRateView, self).__init__(**kwargs)
-        self.retriever = RetrieveCurrencyExchange(currency_exchange_repository)
+        self.retriever = RetrieveCurrencyExchangeRate(currency_exchange_repository)
         self.currencies = currency_exchange_repository.get_all_currencies()
 
     @staticmethod

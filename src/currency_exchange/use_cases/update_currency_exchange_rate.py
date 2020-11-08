@@ -1,7 +1,7 @@
-from src.currency_exchange.use_cases.obtain_active_provider import \
-    ObtainActiveProvider
-from src.currency_exchange.use_cases.retrieve_currency_exchange import \
-    CurrencyExchangeRepository, RetrieveCurrencyExchange
+from src.currency_exchange.exchange_retriever.exchange_factory_provider import \
+    ExchangeFactoryProvider
+from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
+    CurrencyExchangeRepository, RetrieveCurrencyExchangeRate
 from src.exceptions import ExchangeCurrencyDoesNotExist, ExchangeCurrencyError
 
 
@@ -9,7 +9,7 @@ class UpdateCurrencyExchangeRate(object):
 
     def __init__(self, exchange_repository: CurrencyExchangeRepository):
         self.exchange_repository = exchange_repository
-        self.provider = ObtainActiveProvider(exchange_repository).get()
+        self.provider = ExchangeFactoryProvider(exchange_repository).get()
 
     @staticmethod
     def iter(currencies):
@@ -25,7 +25,7 @@ class UpdateCurrencyExchangeRate(object):
         exchanged_currency,
         valuation_date
     ):
-        rate = RetrieveCurrencyExchange.get_exchange_rate_data(
+        rate = RetrieveCurrencyExchangeRate.get_exchange_rate_data(
             source_currency,
             exchanged_currency,
             valuation_date,

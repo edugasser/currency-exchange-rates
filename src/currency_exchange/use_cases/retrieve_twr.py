@@ -2,15 +2,15 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from src.currency_exchange.repository import CurrencyExchangeRepository
-from src.currency_exchange.use_cases.retrieve_currency_exchange import \
-    RetrieveCurrencyExchange
+from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
+    RetrieveCurrencyExchangeRate
 from src.utils import iter_days, round_decimal
 
 
 class RetrieveTWR(object):
 
     def __init__(self, currency_exchange_repo: CurrencyExchangeRepository):
-        self.retriever = RetrieveCurrencyExchange(currency_exchange_repo)
+        self.retriever = RetrieveCurrencyExchangeRate(currency_exchange_repo)
 
     def run(
         self,

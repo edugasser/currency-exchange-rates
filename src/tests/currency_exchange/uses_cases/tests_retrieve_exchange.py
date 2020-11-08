@@ -8,8 +8,8 @@ from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
-from src.currency_exchange.use_cases.retrieve_currency_exchange import \
-    RetrieveCurrencyExchange
+from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
+    RetrieveCurrencyExchangeRate
 from src.exceptions import ExchangeCurrencyDoesNotExist
 from src.tests.mock_repository import MockRepository
 
@@ -18,7 +18,7 @@ class RetrieveExchangeTestCase(TestCase):
 
     def setUp(self):
         self.repository = MockRepository()
-        self.retriever = RetrieveCurrencyExchange(self.repository)
+        self.retriever = RetrieveCurrencyExchangeRate(self.repository)
 
     def test_get_exchange_from_repository(self):
         # Given
@@ -39,8 +39,8 @@ class RetrieveExchangeTestCase(TestCase):
     def test_get_exchange_from_provider(self):
         # Given
         self.repository.get = Mock(side_effect=ExchangeCurrencyDoesNotExist("test"))  # noqa
-        self.retriever.obtain_active_provider = Mock()
-        self.retriever.obtain_active_provider.get.return_value = MockProvider()
+        self.retriever.factory_provider = Mock()
+        self.retriever.factory_provider.get.return_value = MockProvider()
 
         valuation_date = datetime.date.today()
 
@@ -49,7 +49,7 @@ class RetrieveExchangeTestCase(TestCase):
 
         # Then
         self.assertEqual(True, isinstance(rate, Decimal))
-        self.retriever.obtain_active_provider.get.assert_called_once_with()
+        self.retriever.factory_provider.get.assert_called_once_with()
 
     def test_get_exchange_rate_data_with_unsuccesful_response(self):
         # Given

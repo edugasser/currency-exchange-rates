@@ -3,8 +3,8 @@ from decimal import Decimal
 
 from src.currency_exchange.repository import currency_exchange_repository, \
     CurrencyExchangeRepository
-from src.currency_exchange.use_cases.retrieve_currency_exchange import \
-    RetrieveCurrencyExchange
+from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
+    RetrieveCurrencyExchangeRate
 from src.exceptions import CurrencyDoesNotExist
 from src.utils import round_decimal
 
@@ -18,7 +18,7 @@ class ConvertCurrency(object):
 
     def __init__(self, currency_repository: CurrencyExchangeRepository):
         self.currency_repository = currency_repository
-        self.retrieve_currency_exchange = RetrieveCurrencyExchange(
+        self.retrieve_currency_exchange = RetrieveCurrencyExchangeRate(
             currency_exchange_repository
         )
 
