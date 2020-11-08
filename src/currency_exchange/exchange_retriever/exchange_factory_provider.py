@@ -13,12 +13,12 @@ class ExchangeFactoryProvider(object):
         self.exchange_repository = exchange_repository
 
     def get(self):
-        provider_code = self.exchange_repository.get_active_provider()
+        provider_code, config = self.exchange_repository.get_active_provider()
 
         if provider_code == TypeProvider.FIXER_IO:
-            return FixerProvider()
+            return FixerProvider(**config)
         elif provider_code == TypeProvider.MOCK:
-            return MockProvider()
+            return MockProvider(**config)
         else:
             raise ExchangeProviderError(
                 f"Invalid provider: {provider_code}"

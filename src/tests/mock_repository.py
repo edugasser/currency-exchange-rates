@@ -7,7 +7,7 @@ from src.currency_exchange.repository import CurrencyExchangeRepository
 class MockRepository(CurrencyExchangeRepository):
 
     def get_active_provider(self):
-        return TypeProvider.MOCK
+        return TypeProvider.MOCK, {}
 
     def get(self, source_currency, exchanged_currency, valuation_date):
         return Decimal(10)

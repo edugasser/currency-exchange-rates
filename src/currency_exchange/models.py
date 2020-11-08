@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
@@ -13,7 +14,7 @@ class Provider(models.Model):
         default=TypeProvider.MOCK
     )
     default = models.BooleanField()
-    #config = JSONField(null=True)
+    config = JSONField()
 
     def __str__(self):
         return f"{self.provider}: {self.default}"

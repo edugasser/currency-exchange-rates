@@ -80,7 +80,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME', 'exo'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
+        'HOST': os.getenv('DATABASE', '0.0.0.0'),
+        'PORT': os.getenv('DATABASE_PORT', 54321),
+        'ATOMIC_REQUESTS': True,
+    },
 }
 
 
@@ -121,12 +130,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# TODO: to put in jsonfield
-API_KEY_FIXER = os.environ.get(
-    "API_KEY_FIXER",
-    "424e33448b9c83f539af66072d88c79d"
-)
 
 REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning'

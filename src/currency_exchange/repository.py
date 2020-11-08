@@ -58,7 +58,7 @@ class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
             provider = Provider.objects.get(default=True)
         except (Provider.DoesNotExist, Provider.MultipleObjectsReturned):
             raise ExchangeProviderError(f"No Provider created.")
-        return provider.provider
+        return provider.provider, provider.config
 
     def get(self, source_currency, exchanged_currency, valuation_date):
         try:
