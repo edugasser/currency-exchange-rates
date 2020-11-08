@@ -7,7 +7,7 @@ from src.currency_exchange.repository import CurrencyExchangeRepository
 from src.exceptions import ExchangeProviderError
 
 
-class ObtainActiveProvider(object):
+class ExchangeFactoryProvider(object):
 
     def __init__(self, exchange_repository: CurrencyExchangeRepository):
         self.exchange_repository = exchange_repository
