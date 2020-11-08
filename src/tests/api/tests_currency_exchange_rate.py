@@ -9,7 +9,7 @@ from src.currency_exchange.models import Currency, CurrencyExchangeRate, \
 
 
 class CurrencyExchangeRateTestCase(APITestCase):
-    url = "/api/currency-rates/{origin}/?{dates}"
+    url = "/api/v1/currency-rates/{origin}/{from_date}/{to_date}/"
 
     def setUp(self):
         Provider.objects.create(provider=TypeProvider.MOCK, default=True)
@@ -33,27 +33,26 @@ class CurrencyExchangeRateTestCase(APITestCase):
 
     def test_retrieve_wrong_parameters(self):
         # Given
-        response = self.client.get(self.url.format(origin="EUR", dates=""))
-        data = response.json()
-        expected = ['Required params: date_from and date_to']
+        response = self.client.get(self.url.format(
+            origin="EUR",
+            from_date="",
+            to_date="")
+        )
 
         # Then
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(data, expected)
+        self.assertEqual(response.status_code, 404)
 
     def test_retrieve_currency_exchanges(self):
         # Given
         today_str = self.today.strftime("%Y-%m-%d")
         yesterday_str = self.yesterday.strftime("%Y-%m-%d")
-        params = urllib.parse.urlencode(
-            {
-                "date_from": yesterday_str,
-                "date_to": today_str
-            }
-        )
 
         # When
-        endpoint = self.url.format(origin="EUR", dates=params)
+        endpoint = self.url.format(
+            origin="EUR",
+            from_date=yesterday_str,
+            to_date=today_str
+        )
         response = self.client.get(endpoint)
 
         data = response.json()

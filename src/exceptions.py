@@ -13,6 +13,11 @@ class ExchangeCurrencyError(Exception):
         self.error = error
 
 
+class DecimalError(Exception):
+    def __init__(self, error: str):
+        self.error = error
+
+
 class CurrencyDoesNotExist(Exception):
     def __init__(self, error: str):
         self.error = error

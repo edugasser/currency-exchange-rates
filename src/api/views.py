@@ -14,7 +14,8 @@ from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
 from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
     RetrieveCurrencyExchangeRate
 from src.currency_exchange.use_cases.retrieve_twr import RetrieveTWR
-from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist
+from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist, \
+    DecimalError
 from src.utils import iter_days
 
 
@@ -27,13 +28,14 @@ class ListCurrencyExchangeRateView(ListAPIView):
         self.currencies = currency_exchange_repository.get_all_currencies()
 
     @staticmethod
-    def validate_params(params):
+    def validate_params(start, end):
         try:
-            date_from = parse(params.get('date_from'))
-            date_to = parse(params.get('date_to'))
+            date_from = parse(start)
+            date_to = parse(end)
+            assert date_from < date_to
         except Exception:
             raise serializers.ValidationError(
-                "Required params: date_from and date_to"
+                "Required valid date params: YYYY-mm-dd and from < to"
             )
         return date_from, date_to
 
@@ -51,8 +53,8 @@ class ListCurrencyExchangeRateView(ListAPIView):
             "rate_value": rate_value
         }
 
-    def list(self, request, origin, *args, **kwargs):
-        date_from, date_to = self.validate_params(request.GET)
+    def list(self, request, version, origin, start, end, *args, **kwargs):
+        date_from, date_to = self.validate_params(start, end)
 
         result = []
         for day in iter_days(date_from, date_to):
@@ -72,7 +74,7 @@ class ListCurrencyExchangeRateView(ListAPIView):
 class ConvertCurrencyView(RetrieveAPIView):
     queryset = CurrencyExchangeRate.objects.all()
 
-    def retrieve(self, request, origin, target, *args, **kwargs):
+    def retrieve(self, request, version, origin, target, *args, **kwargs):
         params = request.GET
         amount = params.get("amount")
 
@@ -110,28 +112,24 @@ class ConvertCurrencyView(RetrieveAPIView):
 class TimeWeightedRateView(RetrieveAPIView):
     queryset = CurrencyExchangeRate.objects.all()
 
-    def retrieve(self, request, origin, target, date_invested,  *args, **kwargs):  # noqa
-
+    @staticmethod
+    def clean_params(origin, target, date_invested, amount):
         twr_request = TwrRequest(data={
             "origin_currency": origin,
             "target_currency": target,
             "date_invested": date_invested,
-            "amount": request.GET.get("amount")
+            "amount": amount
         })
 
         if not twr_request.is_valid():
             raise serializers.ValidationError(
                 twr_request.errors
             )
-        params = twr_request.data
 
-        twr = RetrieveTWR(currency_exchange_repository).run(
-            params["origin_currency"],
-            params["target_currency"],
-            Decimal(params["amount"]),
-            parse(params["date_invested"])
-        )
+        return twr_request.data
 
+    @staticmethod
+    def build_response(params, twr):
         response = TwrResponse(data={
             "origin_currency": params["origin_currency"],
             "target_currency": params["target_currency"],
@@ -142,5 +140,25 @@ class TimeWeightedRateView(RetrieveAPIView):
 
         if not response.is_valid():
             raise serializers.ValidationError(response.errors)
+        return response.data
 
-        return Response(response.data)
+    def retrieve(self, request, version, origin, target, date_invested):  # noqa
+
+        params = self.clean_params(
+            origin,
+            target,
+            date_invested,
+            request.GET.get("amount")
+        )
+
+        try:
+            twr = RetrieveTWR(currency_exchange_repository).run(
+                params["origin_currency"],
+                params["target_currency"],
+                Decimal(params["amount"]),
+                parse(params["date_invested"])
+            )
+        except DecimalError as e:
+            raise serializers.ValidationError(e)
+
+        return Response(self.build_response(params, twr))

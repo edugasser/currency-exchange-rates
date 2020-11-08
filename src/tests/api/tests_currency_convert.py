@@ -7,7 +7,7 @@ from src.currency_exchange.models import Currency, CurrencyExchangeRate
 
 
 class CurrencyConvertTestCase(APITestCase):
-    url = "/api/convert-currency/{origin}/{target}/?{params}"
+    url = "/api/v1/convert/{origin}/{target}/?{params}"
 
     def setUp(self):
         euro = Currency.objects.create(code="EUR", name="Euro", symbol="€")
@@ -24,7 +24,7 @@ class CurrencyConvertTestCase(APITestCase):
     def test_convert_without_amount_parameter(self):
         # Given
         endpoint = self.url.format(
-            origin="nothing",
+            origin="EUR",
             target="USD",
             params={}
         )
@@ -62,6 +62,7 @@ class CurrencyConvertTestCase(APITestCase):
             target="USD",
             params=urllib.parse.urlencode({"amount": 100.0})
         )
+
         expected = {
             'amount': '100.000000',
             'converted_amount': '130.000000',

@@ -4,6 +4,7 @@ from decimal import Decimal
 from dateutil.rrule import DAILY, rrule
 
 from src.currency_exchange.constants import DecimalPrecission
+from src.exceptions import DecimalError
 
 
 def iter_days(start: date, end: date):
@@ -12,4 +13,10 @@ def iter_days(start: date, end: date):
 
 
 def round_decimal(amount: Decimal) -> Decimal:
-    return amount.quantize(Decimal(10) ** - DecimalPrecission.DECIMAL_PLACES)
+    try:
+        return amount.quantize(
+            Decimal(10) ** - DecimalPrecission.DECIMAL_PLACES
+        )
+    except Exception as e:
+        raise DecimalError("Invalid decimal operation")
+

@@ -6,7 +6,7 @@ from src.currency_exchange.models import Currency, CurrencyExchangeRate
 
 
 class RetrieveTwrTestCase(APITestCase):
-    url = "/api/twr/{origin}/{target}/{date_invested}/?amount={amount}"
+    url = "/api/v1/twr/{origin}/{target}/{date_invested}/?amount={amount}"
 
     def setUp(self):
         euro = Currency.objects.create(code="EUR", name="Euro", symbol="€")
@@ -56,13 +56,13 @@ class RetrieveTwrTestCase(APITestCase):
             origin="EUR",
             target="USD",
             amount="asdf",
-            date_invested="pepe"
+            date_invested="2020-01-01"
         )
+        
         response = self.client.get(endpoint)
         data = response.json()
         expected = {
-            'amount': ['A valid number is required.'],
-            'date_invested': ['Date has wrong format. Use one of these formats instead: YYYY-MM-DD.']  # noqa
+            'amount': ['A valid number is required.']
         }
 
         # Then
