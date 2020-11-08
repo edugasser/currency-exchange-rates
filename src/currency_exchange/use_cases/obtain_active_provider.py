@@ -14,7 +14,7 @@ class ObtainActiveProvider(object):
 
     def get(self):
         provider_code = self.exchange_repository.get_active_provider()
-        print("COOO ", provider_code)
+
         if provider_code == TypeProvider.FIXER_IO:
             return FixerProvider()
         elif provider_code == TypeProvider.MOCK:

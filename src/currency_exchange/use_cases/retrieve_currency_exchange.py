@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 
 from src.currency_exchange.exchange_retriever.exchange_provider import \
     ExchangeProvider
@@ -20,7 +21,7 @@ class RetrieveCurrencyExchange(object):
         exchanged_currency,
         valuation_date,
         provider
-    ):
+    ) -> Decimal:
         exchange_response = ExchangeProvider(provider).get(
             source_currency,
             [exchanged_currency],
@@ -30,9 +31,14 @@ class RetrieveCurrencyExchange(object):
             raise ExchangeCurrencyDoesNotExist(
                 "The {source_currency} doesn't has exchange for {exchanged_currency}"  # noqa
             )
-        return exchange_response.rates[0].rate
+        return Decimal(exchange_response.rates[0].rate)
 
-    def get(self, source_currency: str, exchanged_currency: str, valuation_date: date = None):  # noqa
+    def get(
+        self,
+        source_currency: str,
+        exchanged_currency: str,
+        valuation_date: date = None
+    ) -> Decimal:
         if not valuation_date:
             valuation_date = date.today()
 

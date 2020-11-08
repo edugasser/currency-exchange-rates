@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 
 from django.test import TestCase
 from mock import Mock
@@ -46,7 +47,7 @@ class RetrieveExchangeTestCase(TestCase):
         rate = self.retriever.get("EUR", "USD", valuation_date)
 
         # Then
-        self.assertEqual(True, isinstance(rate, float))
+        self.assertEqual(True, isinstance(rate, Decimal))
         self.retriever.obtain_active_provider.get.assert_called_once_with()
 
     def test_get_exchange_rate_data_with_unsuccesful_response(self):

@@ -32,9 +32,9 @@ class RetrieveTWR(object):
         for day in self.iter_days(date_invested+timedelta(days=1)):
             rate = self.retriever.get(source_currency, target_currency, day)
             end_value = rate * amount
-            hp = ((end_value - initial_value) / initial_value) * Decimal(100)
+            hp = ((end_value - initial_value) / initial_value) * 100
             twr *= 1 + hp
             initial_value = end_value
 
         twr -= 1
-        return Decimal(twr)
+        return twr

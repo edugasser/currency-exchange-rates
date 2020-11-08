@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
-from src.api.serializers.currency_exchange_rate import \
+from src.api.serializers import \
     CurrencyExchangeRateSerializer, CurrencyConvertResponse, TwrResponse, \
     TwrRequest
 from src.currency_exchange.models import CurrencyExchangeRate
@@ -104,5 +104,7 @@ class TimeWeightedRateView(RetrieveAPIView):
             "twr": twr
         })
 
-        response.is_valid()
+        if not response.is_valid():
+            raise serializers.ValidationError(response.errors)
+
         return Response(response.data)
