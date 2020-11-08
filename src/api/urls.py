@@ -9,7 +9,7 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path(
         'currency-rates/<str:origin>/',
-        views.CurrencyExchangeRateView.as_view(),
+        views.ListCurrencyExchangeRateView.as_view(),
         name='currency-rates'
     ),
     path(

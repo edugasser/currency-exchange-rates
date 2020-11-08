@@ -1,14 +1,12 @@
-import json
 from decimal import Decimal
 
 from dateutil.parser import parse
-from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from src.api.serializers import \
-    CurrencyExchangeRateSerializer, CurrencyConvertResponse, TwrResponse, \
+    CurrencyConvertResponse, TwrResponse, \
     TwrRequest, ListCurrencyExchangeResponse
 from src.currency_exchange.models import CurrencyExchangeRate
 from src.currency_exchange.repository import currency_exchange_repository
@@ -20,11 +18,11 @@ from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist
 from src.utils import iter_days
 
 
-class CurrencyExchangeRateView(ListAPIView):
+class ListCurrencyExchangeRateView(ListAPIView):
     queryset = CurrencyExchangeRate.objects.all()
 
     def __init__(self, **kwargs):
-        super(CurrencyExchangeRateView, self).__init__(**kwargs)
+        super(ListCurrencyExchangeRateView, self).__init__(**kwargs)
         self.retriever = RetrieveCurrencyExchange(currency_exchange_repository)
         self.currencies = currency_exchange_repository.get_all_currencies()
 
@@ -63,7 +61,9 @@ class CurrencyExchangeRateView(ListAPIView):
                     self.build_node(origin, target, day)
                 )
         response = ListCurrencyExchangeResponse(data=result, many=True)
-        response.is_valid()
+
+        if not response.is_valid():
+            raise serializers.ValidationError(response.errors)
         return Response(response.data)
 
 
@@ -96,7 +96,10 @@ class ConvertCurrencyView(RetrieveAPIView):
             "origin_currency": currency_converted.origin,
             "target_currency": currency_converted.target
         })
-        response.is_valid()
+
+        if not response.is_valid():
+            raise serializers.ValidationError(response.errors)
+
         return Response(response.data)
 
 

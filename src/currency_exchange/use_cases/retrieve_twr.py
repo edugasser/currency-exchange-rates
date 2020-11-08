@@ -1,8 +1,6 @@
 from datetime import date, timedelta
 from decimal import Decimal
 
-from dateutil.rrule import rrule, DAILY
-
 from src.currency_exchange.repository import CurrencyExchangeRepository
 from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     RetrieveCurrencyExchange

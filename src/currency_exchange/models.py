@@ -1,11 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.contrib.postgres.fields import JSONField
-from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_delete
+from django.dispatch import receiver
 
 from .constants import TypeProvider
-from .managers import CurrencyExchangeRateManager
 
 
 class Provider(models.Model):
@@ -32,7 +30,6 @@ class Currency(models.Model):
 
 
 class CurrencyExchangeRate(models.Model):
-    objects = CurrencyExchangeRateManager()
     source_currency = models.ForeignKey(
         Currency,
         related_name='exchanges',
