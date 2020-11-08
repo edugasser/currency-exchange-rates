@@ -31,7 +31,13 @@ class CurrencyConvertResponse(serializers.Serializer):
     origin_currency = serializers.CharField()
     target_currency = serializers.CharField()
 
+    def validate(self, attrs):
+        if attrs["amount"] <= 0:
+            raise serializers.ValidationError(
+                "The field amount must be greather than 0"
+            )
 
+        
 class ListCurrencyExchangeResponse(serializers.Serializer):
     origin_currency = serializers.CharField()
     target_currency = serializers.CharField()
@@ -52,3 +58,9 @@ class TwrRequest(serializers.Serializer):
     target_currency = serializers.CharField()
     amount = decimal_field()
     date_invested = serializers.DateField()
+
+    def validate(self, attrs):
+        if attrs["amount"] <= 0:
+            raise serializers.ValidationError(
+                "The field amount must be greather than 0"
+            )

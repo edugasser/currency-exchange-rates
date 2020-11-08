@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
-from src.api.serializers import \
+from src.api.v1.serializers import \
     CurrencyConvertResponse, TwrResponse, \
     TwrRequest, ListCurrencyExchangeResponse
 from src.currency_exchange.models import CurrencyExchangeRate
