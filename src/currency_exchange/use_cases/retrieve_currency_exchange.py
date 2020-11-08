@@ -7,6 +7,7 @@ from src.currency_exchange.repository import CurrencyExchangeRepository
 from src.currency_exchange.use_cases.obtain_active_provider import \
     ObtainActiveProvider
 from src.exceptions import ExchangeCurrencyDoesNotExist
+from src.utils import round_decimal
 
 
 class RetrieveCurrencyExchange(object):
@@ -56,4 +57,5 @@ class RetrieveCurrencyExchange(object):
                 valuation_date,
                 provider
             )
-        return currency_rate
+
+        return round_decimal(currency_rate)

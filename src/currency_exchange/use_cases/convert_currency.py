@@ -1,11 +1,12 @@
+from collections import namedtuple
 from decimal import Decimal
 
-from src.currency_exchange.models import Currency
-from src.currency_exchange.repository import currency_exchange_repository
+from src.currency_exchange.repository import currency_exchange_repository, \
+    CurrencyExchangeRepository
 from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     RetrieveCurrencyExchange
 from src.exceptions import CurrencyDoesNotExist
-from collections import namedtuple
+from src.utils import round_decimal
 
 converted_currency = namedtuple(
     "ConvertedCurrency",
@@ -15,20 +16,18 @@ converted_currency = namedtuple(
 
 class ConvertCurrency(object):
 
-    def __init__(self):
-        self.valid_currencies = Currency.objects.all().values_list(
-            'code',
-            flat=True
-        )
+    def __init__(self, currency_repository: CurrencyExchangeRepository):
+        self.currency_repository = currency_repository
         self.retrieve_currency_exchange = RetrieveCurrencyExchange(
             currency_exchange_repository
         )
 
     def validate_currencies(self, origin, target):
-        if origin not in self.valid_currencies:
+        valid_currencies = self.currency_repository.get_all_currencies()
+        if origin not in valid_currencies:
             raise CurrencyDoesNotExist(f"The currency {origin} doesn't exist")
 
-        if target not in self.valid_currencies:
+        if target not in valid_currencies:
             raise CurrencyDoesNotExist(f"The currency {target} doesn't exist")
 
     def convert(self, origin_currency: str, amount: Decimal,  target_currency: str):  # noqa
@@ -38,7 +37,7 @@ class ConvertCurrency(object):
             target_currency
         )
 
-        converted_amount = amount * rate if amount else 0.
+        converted_amount = round_decimal(amount * rate if amount else 0.)
         return converted_currency(
             origin_currency,
             target_currency,

@@ -63,8 +63,8 @@ class CurrencyConvertTestCase(APITestCase):
             params=urllib.parse.urlencode({"amount": 100.0})
         )
         expected = {
-            'amount': 100.0,
-            'converted_amount': 130.0,
+            'amount': '100.000000',
+            'converted_amount': '130.000000',
             'origin_currency': 'EUR',
             'target_currency': 'USD'
         }
@@ -72,7 +72,7 @@ class CurrencyConvertTestCase(APITestCase):
         # When
         response = self.client.get(endpoint)
         data = response.json()
-        print(data)
+
         # Then
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data, expected)

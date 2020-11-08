@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from src.api.serializers import \
     CurrencyConvertResponse, TwrResponse, \
     TwrRequest, ListCurrencyExchangeResponse
+from src.currency_exchange.constants import DecimalPrecission
 from src.currency_exchange.models import CurrencyExchangeRate
 from src.currency_exchange.repository import currency_exchange_repository
 from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
@@ -38,15 +39,17 @@ class ListCurrencyExchangeRateView(ListAPIView):
         return date_from, date_to
 
     def build_node(self, origin, target, day):
+        rate_value = self.retriever.get(
+            origin,
+            target,
+            day
+        )
+        rate_value = rate_value
         return {
             "origin_currency": origin,
             "target_currency": target,
             "valuation_date": day.date(),
-            "rate_value": self.retriever.get(
-                origin,
-                target,
-                day
-            )
+            "rate_value": rate_value
         }
 
     def list(self, request, origin, *args, **kwargs):
@@ -80,7 +83,9 @@ class ConvertCurrencyView(RetrieveAPIView):
             )
 
         try:
-            currency_converted = ConvertCurrency().convert(
+            currency_converted = ConvertCurrency(
+                currency_exchange_repository
+            ).convert(
                 origin,
                 Decimal(amount),
                 target
@@ -91,10 +96,10 @@ class ConvertCurrencyView(RetrieveAPIView):
             )
 
         response = CurrencyConvertResponse(data={
-            "amount": currency_converted.amount,
             "converted_amount": currency_converted.converted_amount,
             "origin_currency": currency_converted.origin,
-            "target_currency": currency_converted.target
+            "target_currency": currency_converted.target,
+            "amount": currency_converted.amount
         })
 
         if not response.is_valid():

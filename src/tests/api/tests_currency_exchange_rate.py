@@ -55,8 +55,8 @@ class CurrencyExchangeRateTestCase(APITestCase):
         # When
         endpoint = self.url.format(origin="EUR", dates=params)
         response = self.client.get(endpoint)
+
         data = response.json()
-        print(data)
 
         # Then
         results = 2

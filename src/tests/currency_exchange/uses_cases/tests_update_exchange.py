@@ -3,7 +3,8 @@ import datetime
 from django.test import TestCase
 from mock import patch, Mock, call
 
-from src.currency_exchange.use_cases.update_currency_exchange_rate import UpdateCurrencyExchangeRate
+from src.currency_exchange.use_cases.update_currency_exchange_rate import \
+    UpdateCurrencyExchangeRate
 from src.tests.mock_repository import MockRepository
 
 

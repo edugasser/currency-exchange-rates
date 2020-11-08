@@ -4,7 +4,7 @@ from decimal import Decimal
 from src.currency_exchange.repository import CurrencyExchangeRepository
 from src.currency_exchange.use_cases.retrieve_currency_exchange import \
     RetrieveCurrencyExchange
-from src.utils import iter_days
+from src.utils import iter_days, round_decimal
 
 
 class RetrieveTWR(object):
@@ -31,4 +31,4 @@ class RetrieveTWR(object):
             initial_value = end_value
 
         twr -= 1
-        return twr
+        return round_decimal(twr)

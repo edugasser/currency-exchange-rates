@@ -8,7 +8,8 @@ from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
-from src.currency_exchange.use_cases.retrieve_currency_exchange import RetrieveCurrencyExchange
+from src.currency_exchange.use_cases.retrieve_currency_exchange import \
+    RetrieveCurrencyExchange
 from src.exceptions import ExchangeCurrencyDoesNotExist
 from src.tests.mock_repository import MockRepository
 
@@ -21,7 +22,7 @@ class RetrieveExchangeTestCase(TestCase):
 
     def test_get_exchange_from_repository(self):
         # Given
-        self.repository.get = Mock(return_value=99)
+        self.repository.get = Mock(return_value=Decimal(99))
         valuation_date = datetime.date.today()
 
         # When

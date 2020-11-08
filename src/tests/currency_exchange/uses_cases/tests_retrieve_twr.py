@@ -31,6 +31,6 @@ class RetrieveTwrTestCase(TestCase):
             rate_value=1.30
         )
 
-    # def test_retrieve_twr(self):
-    #     twr = self.retrieve_twr.run("EUR", "USD", Decimal(50), self.yesterday)
-    #     self.assertEqual(twr, Decimal(225))
+    def test_retrieve_twr(self):
+        twr = self.retrieve_twr.run("EUR", "USD", Decimal(50), self.yesterday)
+        self.assertEqual(twr, Decimal(225))
