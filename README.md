@@ -7,8 +7,8 @@ currency data providers. So, it won’t only work with Fixer.io but also with an
 other providers that might have different APIs for retrieving currency exchange
 rates.
 
-![Alt text](dashboard_screenshot?raw=true "Dashboard")
-![Alt text](doc_screenshot?raw=true "Dashboard")
+![alt text](https://github.com/edugasser/currency-exchange-rates/blob/master/dashboard_screenshot.png?raw=true)
+![alt text](https://github.com/edugasser/currency-exchange-rates/blob/master/doc_screenshot.png?raw=true)
 
 # Use cases
   - Retrieve and store daily currency rates. ([update daily rates])
