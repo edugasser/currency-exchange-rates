@@ -72,7 +72,7 @@ $ python -m flake8
 [StartAdmin](https://www.bootstrapdash.com/product/star-admin-free/)
 
 [import csv]: <https://github.com/edugasser/currency-exchange-rates/blob/master/src/currency_exchange/use_cases/import_currency_exchange_rates.py>
- [update daily rates]: <https://github.com/edugasser/currency-exchange-rates/blob/master/src/currency_exchange/use_cases/update_currency_exchange_rate.pyy>
+ [update daily rates]: <https://github.com/edugasser/currency-exchange-rates/blob/master/src/currency_exchange/use_cases/update_currency_exchange_rate.py>
  [calculate currency]: <https://github.com/edugasser/currency-exchange-rates/blob/master/src/currency_exchange/use_cases/convert_currency.py>
  [retrieve rates]: <https://github.com/edugasser/currency-exchange-rates/blob/master/src/currency_exchange/use_cases/retrieve_currency_exchange_rate.py>
  [calculate twr]: <https://github.com/edugasser/currency-exchange-rates/blob/master/src/currency_exchange/use_cases/retrieve_twr.py>
