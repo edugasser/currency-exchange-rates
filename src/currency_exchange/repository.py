@@ -6,8 +6,11 @@ from rest_framework import serializers
 
 from src.currency_exchange.models import CurrencyExchangeRate, Provider, \
     Currency
-from src.exceptions import ExchangeProviderError, ExchangeCurrencyDoesNotExist, \
+from src.exceptions import (
+    ExchangeProviderError,
+    ExchangeCurrencyDoesNotExist,
     ExchangeCurrencyError
+)
 
 
 class CurrencyExchangeRepository:
@@ -50,7 +53,7 @@ class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
         try:
             provider = Provider.objects.get(default=True)
         except (Provider.DoesNotExist, Provider.MultipleObjectsReturned):
-            raise ExchangeProviderError(f"No Provider created.")
+            raise ExchangeProviderError("No Provider created.")
         return provider.provider
 
     def get(

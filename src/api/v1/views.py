@@ -14,17 +14,22 @@ from src.currency_exchange.use_cases.convert_currency import ConvertCurrency
 from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
     RetrieveCurrencyExchangeRate
 from src.currency_exchange.use_cases.retrieve_twr import RetrieveTWR
-from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist, \
-    DecimalError, ExchangeProviderError
+from src.exceptions import (
+    ExchangeCurrencyDoesNotExist,
+    CurrencyDoesNotExist,
+    DecimalError,
+    ExchangeProviderError
+)
 from src.utils import iter_days
 
 
 class ListCurrencyExchangeRateView(ListAPIView):
     queryset = CurrencyExchangeRate.objects.all()
+    serializer_class = ListCurrencyExchangeResponse
 
     def __init__(self, **kwargs):
         super(ListCurrencyExchangeRateView, self).__init__(**kwargs)
-        self.retriever = RetrieveCurrencyExchangeRate(currency_exchange_repository)
+        self.retriever = RetrieveCurrencyExchangeRate(currency_exchange_repository)   # noqa
         self.currencies = currency_exchange_repository.get_all_currencies()
 
     @staticmethod
@@ -73,14 +78,13 @@ class ListCurrencyExchangeRateView(ListAPIView):
 
 class ConvertCurrencyView(RetrieveAPIView):
     queryset = CurrencyExchangeRate.objects.all()
+    serializer_class = CurrencyConvertResponse
 
     @staticmethod
     def clean_params(params):
         amount = params.get("amount")
         if not amount:
-            raise serializers.ValidationError(
-                f"Required GET param 'amount'"
-            )
+            raise serializers.ValidationError("Required GET param 'amount'")
         return Decimal(amount)
 
     @staticmethod
@@ -123,6 +127,7 @@ class ConvertCurrencyView(RetrieveAPIView):
 
 class TimeWeightedRateView(RetrieveAPIView):
     queryset = CurrencyExchangeRate.objects.all()
+    serializer_class = TwrResponse
 
     @staticmethod
     def clean_params(origin, target, date_invested, amount):
@@ -154,7 +159,7 @@ class TimeWeightedRateView(RetrieveAPIView):
             raise serializers.ValidationError(response.errors)
         return response.data
 
-    def retrieve(self, request, version, origin, target, date_invested):  # noqa
+    def retrieve(self, request, version, origin, target, date_invested):
 
         params = self.clean_params(
             origin,

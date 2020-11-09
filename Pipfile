@@ -21,6 +21,7 @@ django = "~=2.2"
 python-dateutil = "*"
 psycopg2-binary = "*"
 requests = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8"

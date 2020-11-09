@@ -1,8 +1,7 @@
 from src.currency_exchange.constants import TypeProvider
 from src.currency_exchange.exchange_retriever.exchange_provider import \
     ExchangeProviderInterface
-from src.currency_exchange.exchange_retriever.exchange_providers.fixer_io import \
-    FixerProvider
+from src.currency_exchange.exchange_retriever.exchange_providers.fixer_io import FixerProvider  # noqa
 from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
     MockProvider
 from src.currency_exchange.repository import CurrencyExchangeRepository

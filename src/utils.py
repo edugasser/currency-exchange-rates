@@ -17,6 +17,5 @@ def round_decimal(amount: Decimal) -> Decimal:
         return amount.quantize(
             Decimal(10) ** - DecimalPrecission.DECIMAL_PLACES
         )
-    except Exception as e:
+    except Exception:
         raise DecimalError("Invalid decimal operation")
-

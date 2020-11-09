@@ -1,4 +1,3 @@
-import urllib
 from datetime import timedelta, date
 
 from rest_framework.test import APITestCase

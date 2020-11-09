@@ -13,7 +13,9 @@ def decimal_field():
 
 class CurrencyExchangeRateSerializer(serializers.ModelSerializer):
     source_currency = serializers.CharField(source="source_currency.code")
-    exchanged_currency = serializers.CharField(source="exchanged_currency.code")
+    exchanged_currency = serializers.CharField(
+        source="exchanged_currency.code"
+    )
 
     class Meta:
         model = CurrencyExchangeRate
@@ -37,6 +39,7 @@ class CurrencyConvertResponse(serializers.Serializer):
                 "The field amount must be greather than 0"
             )
         return attrs
+
 
 class ListCurrencyExchangeResponse(serializers.Serializer):
     origin_currency = serializers.CharField()

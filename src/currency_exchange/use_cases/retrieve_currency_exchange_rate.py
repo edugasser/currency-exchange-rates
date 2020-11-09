@@ -1,8 +1,7 @@
 from datetime import date
 from decimal import Decimal
 
-from src.currency_exchange.exchange_retriever.exchange_factory_provider import \
-    ExchangeFactoryProvider
+from src.currency_exchange.exchange_retriever.exchange_factory_provider import ExchangeFactoryProvider  # noqa
 from src.currency_exchange.exchange_retriever.exchange_provider import \
     ExchangeProvider
 from src.currency_exchange.repository import CurrencyExchangeRepository

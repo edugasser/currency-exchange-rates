@@ -38,5 +38,3 @@ class ExchangeRetrieverTestCase(TestCase):
             ["COP", "USD"],
             valuation_date
         )
-
-

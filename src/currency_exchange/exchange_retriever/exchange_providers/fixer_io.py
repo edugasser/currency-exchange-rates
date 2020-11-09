@@ -19,7 +19,7 @@ class FixerProvider(ExchangeProviderInterface):
         self.api_key = settings.API_KEY_FIXER
         if not self.api_key:
             raise ExchangeProviderError(
-                f"Fixer IO: Required API KEY configuration"
+                "Fixer IO: Required API KEY configuration"
             )
 
     def make_request(self, path, params):
@@ -61,9 +61,7 @@ class FixerProvider(ExchangeProviderInterface):
         exchanged_currencies: List[str]
     ) -> ExchangeResponse:
         if not exchanged_currencies:
-            raise ExchangeProviderError(
-                f"No currencies provided"
-            )
+            raise ExchangeProviderError("No currencies provided")
         params = {
             "base": currency,
             "symbols": ",".join(exchanged_currencies)
@@ -78,9 +76,7 @@ class FixerProvider(ExchangeProviderInterface):
         valuation_date: date
     ) -> ExchangeResponse:
         if not exchanged_currencies:
-            raise ExchangeProviderError(
-                f"No exchanged_currencies provided"
-            )
+            raise ExchangeProviderError("No exchanged_currencies provided")
         params = {
             "base": currency,
             "symbols": ",".join(exchanged_currencies)

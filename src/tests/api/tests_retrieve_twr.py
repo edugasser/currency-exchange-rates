@@ -58,7 +58,6 @@ class RetrieveTwrTestCase(APITestCase):
             amount="asdf",
             date_invested="2020-01-01"
         )
-        
         response = self.client.get(endpoint)
         data = response.json()
         expected = {

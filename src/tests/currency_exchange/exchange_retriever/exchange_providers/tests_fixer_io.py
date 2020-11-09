@@ -3,8 +3,7 @@ import datetime
 from django.test import TestCase
 from mock import Mock
 
-from src.currency_exchange.exchange_retriever.exchange_providers.fixer_io import \
-    FixerProvider
+from src.currency_exchange.exchange_retriever.exchange_providers.fixer_io import FixerProvider  # noqa
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
 from src.exceptions import ExchangeProviderError

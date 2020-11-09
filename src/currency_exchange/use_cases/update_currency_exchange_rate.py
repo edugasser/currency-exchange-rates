@@ -1,7 +1,6 @@
 from django.db.transaction import atomic
 
-from src.currency_exchange.exchange_retriever.exchange_factory_provider import \
-    ExchangeFactoryProvider
+from src.currency_exchange.exchange_retriever.exchange_factory_provider import ExchangeFactoryProvider  # noqa
 from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
     CurrencyExchangeRepository, RetrieveCurrencyExchangeRate
 from src.exceptions import ExchangeCurrencyDoesNotExist, ExchangeCurrencyError
