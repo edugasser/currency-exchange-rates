@@ -1,13 +1,11 @@
 {% load static %}
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin Premium Bootstrap Admin Dashboard Template</title>
+    <title>Currency Exchange Rates</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static "assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css" %}">
     <link rel="stylesheet" href="{% static "assets/vendors/iconfonts/ionicons/dist/css/ionicons.css" %}">
@@ -73,24 +71,65 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-md-12">
-                <div class="page-header-toolbar">
-                  <div class="filter-wrapper">
-                    <select id="currency">
-                      <option>EUR</option>
-                      <option>USD</option>
-                      <option>CHF</option>
-                      <option>GBP</option>
-                    </select>
-                  </div>
-                </div>
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Currency converter</h4>
+                        <form class="forms-sample">
+                          <div class="form-group row">
+                            <label for="source_currency" class="col-sm-3 col-form-label">Amount</label>
+                            <div class="col-sm-9">
+                              <input class="form-control" type="number" id="amount">
+                            </div>
+                          </div>
+                            <div class="form-group row">
+                            <label for="source_currency" class="col-sm-3 col-form-label">From</label>
+                            <div class="col-sm-9">
+                              <select class="form-control form-control-lg" id="source_currency">
+                               <option>EUR</option>
+                               <option>USD</option>
+                               <option>CHF</option>
+                               <option>GBP</option>
+                           </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="target_currency" class="col-sm-3 col-form-label">To</label>
+                            <div class="col-sm-9">
+                              <select  class="form-control form-control-lg" id="target_currency">
+                                <option>USD</option>
+                                <option>EUR</option>
+                                <option>CHF</option>
+                                <option>GBP</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <button type="submit" onClick="convertCurrency()" class="btn btn-success mr-2">Convert</button>
+                          <label style="background-color:#eee;padding:10px;font-size:18pt" id="amountConverted"></label>
+                        </form>
+                      </div>
+                    </div>
               </div>
+
+
             </div>
              <div class="row">
               <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title mb-0">Currency Exchange Rates</h4>
+                           <br>
+                       <div class="filter-wrapper">
+                           <select class="form-control form-control-lg" id="currency">
+                               <option>EUR</option>
+                               <option>USD</option>
+                               <option>CHF</option>
+                               <option>GBP</option>
+                           </select>
+                       </div>
+
                     <div class="d-flex flex-column flex-lg-row">
                       <ul class="nav nav-tabs sales-mini-tabs ml-lg-auto mb-4 mb-md-0" role="tablist">
                         <li class="nav-item">
@@ -149,13 +188,34 @@
     <script src="{% static "assets/js/demo_1/dashboard.js"  %}"></script>
     <!-- End custom js for this page-->
 
+
+    <script type="text/javascript">
+            $("#amountConverted").hide();
+        function convertCurrency() {
+            var source = $("#source_currency").val();
+            var target = $("#target_currency").val();
+            var amount = $("#amount").val();
+
+          var requestURL = "/api/v1/convert/"+source+"/"+ target + "/?amount="+amount;
+          const request = new XMLHttpRequest();
+          request.open('GET', requestURL, false);
+          request.send(null);
+
+          if (request.status === 200) {
+            var response =  JSON.parse(request.responseText);
+            $("#amountConverted").show();
+            $("#amountConverted").text(response["converted_amount"]);
+          }
+          return {};
+
+        }
+    </script>
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
 
       var date = new Date();
       var last = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
-
-
 
       google.charts.load('current', {'packages':['line']});
       google.charts.setOnLoadCallback(drawChart);
