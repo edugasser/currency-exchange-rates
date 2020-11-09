@@ -140,3 +140,27 @@ APPEND_SLASH = True
 API_KEY_FIXER = os.environ.get(
     "API_KEY_FIXER"
 )
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname:<7} {asctime} {module} ::: {message}",
+            "style": "{",
+        },
+        "simple": {"format": "[{name}] {levelname} ::: {message}", "style": "{"},
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
+    },
+    "root": {"handlers": ["console"], "level": "WARNING"},
+    "loggers": {},
+}
+
+
+LOGGING["loggers"]["appLogger"] = {
+    "handlers": ["console"],
+    "level": "INFO",
+    "propagate": False,
+}
