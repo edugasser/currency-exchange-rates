@@ -24,7 +24,7 @@ SECRET_KEY = 'i&k1h$uj94hp165j$!sr8vd2=v!dots-!h3&1jvzo#rb8$p0c+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -80,15 +80,14 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DATABASE_NAME', 'exo'),
-        'USER': os.getenv('DATABASE_USER', 'postgres'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
-        'HOST': os.getenv('DATABASE', '0.0.0.0'),
-        'PORT': os.getenv('DATABASE_PORT', 54321),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DB_HOST',),
+        'PORT': os.getenv('DB_PORT'),
         'ATOMIC_REQUESTS': True,
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -126,7 +125,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
+STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'static'))
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'media'))
+MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning'
@@ -134,6 +138,5 @@ REST_FRAMEWORK = {
 APPEND_SLASH = True
 
 API_KEY_FIXER = os.environ.get(
-    "API_KEY_FIXER",
-    "424e33448b9c83f539af66072d88c79d"
+    "API_KEY_FIXER"
 )

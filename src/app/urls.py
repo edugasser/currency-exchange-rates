@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 from django.views.generic import TemplateView
+from django.conf.urls.static import static
+
+from src.app import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,3 +30,5 @@ urlpatterns = [
     ), name='docs'),
     path('', include("dashboard.urls")),
 ]
+
+urlpatterns += static(settings.STATIC_ROOT, document_root=settings.STATIC_ROOT)

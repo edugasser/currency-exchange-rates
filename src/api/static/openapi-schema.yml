@@ -1,0 +1,191 @@
+openapi: 3.0.2
+info:
+  title: 'Currency Exchange Rates API'
+  version: '1.0.0'
+  description: "API for currency exchange rates"
+  contact:
+    email: "edugasser@gmail.com"
+paths:
+  /api/{version}/historical/{origin}/{start}/{end}/:
+    get:
+      operationId: retrieveCurrencyExchangeRate
+      description: ''
+      parameters:
+      - name: version
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: origin
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: start
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: end
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCurrencyExchangeResponse'
+          description: ''
+      tags:
+      - api
+  /api/{version}/convert/{origin}/{target}/:
+    get:
+      operationId: retrieveCurrencyExchangeRate
+      description: ''
+      parameters:
+      - name: version
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: origin
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: target
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyConvertResponse'
+          description: ''
+      tags:
+      - api
+  /api/{version}/twr/{origin}/{target}/{date_invested}/:
+    get:
+      operationId: retrieveCurrencyExchangeRate
+      description: ''
+      parameters:
+      - name: version
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: origin
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: target
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: date_invested
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwrResponse'
+          description: ''
+      tags:
+      - api
+components:
+  schemas:
+    ListCurrencyExchangeResponse:
+      type: object
+      properties:
+        origin_currency:
+          type: string
+        target_currency:
+          type: string
+        valuation_date:
+          type: string
+          format: date
+        rate_value:
+          type: string
+          format: decimal
+          multipleOf: 1.0e-06
+          maximum: 1000000000000
+          minimum: -1000000000000
+      required:
+      - origin_currency
+      - target_currency
+      - valuation_date
+      - rate_value
+    CurrencyConvertResponse:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          multipleOf: 1.0e-06
+          maximum: 1000000000000
+          minimum: -1000000000000
+        converted_amount:
+          type: string
+          format: decimal
+          multipleOf: 1.0e-06
+          maximum: 1000000000000
+          minimum: -1000000000000
+        origin_currency:
+          type: string
+        target_currency:
+          type: string
+      required:
+      - amount
+      - converted_amount
+      - origin_currency
+      - target_currency
+    TwrResponse:
+      type: object
+      properties:
+        origin_currency:
+          type: string
+        target_currency:
+          type: string
+        amount:
+          type: string
+          format: decimal
+          multipleOf: 1.0e-06
+          maximum: 1000000000000
+          minimum: -1000000000000
+        twr:
+          type: string
+          format: decimal
+          multipleOf: 1.0e-06
+          maximum: 1000000000000
+          minimum: -1000000000000
+        date_invested:
+          type: string
+          format: date
+      required:
+      - origin_currency
+      - target_currency
+      - amount
+      - twr
+      - date_invested
