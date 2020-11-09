@@ -2,7 +2,7 @@ import abc
 from datetime import date
 from decimal import Decimal
 
-from django.forms import ModelForm
+from rest_framework import serializers
 
 from src.currency_exchange.models import CurrencyExchangeRate, Provider, \
     Currency
@@ -35,22 +35,10 @@ class CurrencyExchangeRepository:
         pass
 
 
-class CurrencyExchangeRateForm(ModelForm):
-
-    def clean_source_currency(self):
-        return Currency.objects.get(code=self.cleaned_data.get('source_currency'))
-
-    def clean_exchange_currency(self):
-        return Currency.objects.get(code=self.cleaned_data.get('exchange_currency'))
-
+class CurrencyExchangeRateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CurrencyExchangeRate
-        fields = (
-            "source_currency",
-            "exchanged_currency",
-            "valuation_date",
-            "rate_value"
-        )
+        fields = '__all__'
 
 
 class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
@@ -83,20 +71,28 @@ class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
                 f"Exchanged currency doesn't exist {source_currency} to {exchanged_currency}"  # noqa
             )
 
+    @staticmethod
+    def get_currency_from_code(currency_code):
+        currency = Currency.objects.filter(code=currency_code).first()
+        return currency.id if currency else None
+
     def save(
         self,
         source_currency: str,
-        exchange_currency: str,
+        exchanged_currency: str,
         rate_value: Decimal,
         valuation_date: date
     ):
+
         data = {
-            "source_currency": source_currency,
-            "exchange_currency": exchange_currency,
+            "source_currency": self.get_currency_from_code(source_currency),
+            "exchanged_currency": self.get_currency_from_code(exchanged_currency),  # noqa
             "rate_value": rate_value,
             "valuation_date": valuation_date
         }
-        form = CurrencyExchangeRateForm(data=data)
+
+        form = CurrencyExchangeRateSerializer(data=data)
+
         if form.is_valid():
             form.save()
         else:

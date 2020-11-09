@@ -4,7 +4,6 @@ from typing import List
 
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse
-from src.logger import logger, _
 
 
 class ExchangeProviderInterface(object):
@@ -50,10 +49,5 @@ class ExchangeProvider(object):
                 exchanged_currencies,
                 valuation_date
             )
-
-        logger.info(
-            _("Exchange provider: latest",
-              valuation_date=valuation_date,
-              response=response))
 
         return response

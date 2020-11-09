@@ -25,16 +25,22 @@ class FixerProvider(ExchangeProviderInterface):
     def make_request(self, path, params):
         data = {"access_key": self.api_key}
         data.update(params)
+
         try:
             response = requests.get(
-                self.endpoint.format(path),
+                self.endpoint.format(path=path),
                 params=data
-            ).json()
+            )
+            response.raise_for_status()
+            result = response.json()
+            if not result["success"]:
+                raise ValueError(result["error"])
         except Exception as e:
             raise ExchangeProviderError(
                 f"Error trying to get data from Fixer io: {e}"
             )
-        return response
+
+        return result
 
     @staticmethod
     def transform_response(response):
@@ -56,7 +62,7 @@ class FixerProvider(ExchangeProviderInterface):
     ) -> ExchangeResponse:
         if not exchanged_currencies:
             raise ExchangeProviderError(
-                f"No currencienns provided"
+                f"No currencies provided"
             )
         params = {
             "base": currency,

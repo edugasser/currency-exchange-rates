@@ -7,6 +7,7 @@ from src.currency_exchange.exchange_retriever.exchange_provider import \
     ExchangeProvider
 from src.currency_exchange.repository import CurrencyExchangeRepository
 from src.exceptions import ExchangeCurrencyDoesNotExist
+from src.logger import logger, _
 from src.utils import round_decimal
 
 
@@ -49,7 +50,12 @@ class RetrieveCurrencyExchangeRate(object):
                 exchanged_currency,
                 valuation_date
             )
+            logger.info(_("Retrieve exchange from repository:",
+                          valuation_date=valuation_date,
+                          response=currency_rate))
+
         except ExchangeCurrencyDoesNotExist:
+            # NOTE: maybe we can save in db the rate for future readings.
             provider = self.factory_provider.get()
             currency_rate = self.get_exchange_rate_data(
                 source_currency,
@@ -57,5 +63,8 @@ class RetrieveCurrencyExchangeRate(object):
                 valuation_date,
                 provider
             )
+            logger.info(_("Retrieve exchange from provider:",
+                          valuation_date=valuation_date,
+                          response=currency_rate))
 
         return round_decimal(currency_rate)

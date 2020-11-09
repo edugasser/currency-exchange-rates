@@ -15,7 +15,7 @@ from src.currency_exchange.use_cases.retrieve_currency_exchange_rate import \
     RetrieveCurrencyExchangeRate
 from src.currency_exchange.use_cases.retrieve_twr import RetrieveTWR
 from src.exceptions import ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist, \
-    DecimalError
+    DecimalError, ExchangeProviderError
 from src.utils import iter_days
 
 
@@ -108,7 +108,11 @@ class ConvertCurrencyView(RetrieveAPIView):
                 Decimal(amount),
                 target
             )
-        except (ExchangeCurrencyDoesNotExist, CurrencyDoesNotExist) as e:
+        except (
+            ExchangeCurrencyDoesNotExist,
+            CurrencyDoesNotExist,
+            ExchangeProviderError
+        ) as e:
             raise serializers.ValidationError(
                 f"An error occurred while converting currency: {e}"
             )
