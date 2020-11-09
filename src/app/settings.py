@@ -136,3 +136,8 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning'
 }
 APPEND_SLASH = True
+
+API_KEY_FIXER = os.environ.get(
+    "API_KEY_FIXER",
+    "424e33448b9c83f539af66072d88c79d"
+)

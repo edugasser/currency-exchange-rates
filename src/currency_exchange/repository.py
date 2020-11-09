@@ -63,7 +63,7 @@ class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
             provider = Provider.objects.get(default=True)
         except (Provider.DoesNotExist, Provider.MultipleObjectsReturned):
             raise ExchangeProviderError(f"No Provider created.")
-        return provider.provider, provider.config
+        return provider.provider
 
     def get(
         self,

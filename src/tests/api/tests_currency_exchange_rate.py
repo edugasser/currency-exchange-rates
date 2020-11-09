@@ -12,7 +12,7 @@ class CurrencyExchangeRateTestCase(APITestCase):
     url = "/api/v1/historical/{origin}/{from_date}/{to_date}/"
 
     def setUp(self):
-        Provider.objects.create(provider=TypeProvider.MOCK, default=True, config={})  # noqa
+        Provider.objects.create(provider=TypeProvider.MOCK, default=True)
         euro = Currency.objects.create(code="EUR", name="Euro", symbol="€")
         usd = Currency.objects.create(code="USD", name="Dollar", symbol="$")
         self.today = date.today()

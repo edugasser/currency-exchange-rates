@@ -13,8 +13,7 @@ from src.exceptions import ExchangeProviderError
 class FixerIoProviderTestCase(TestCase):
 
     def setUp(self):
-        config = {"API_KEY": "123"}
-        self.provider = FixerProvider(**config)
+        self.provider = FixerProvider()
 
     def test_get_latest_no_currencies(self):
         with self.assertRaises(ExchangeProviderError):

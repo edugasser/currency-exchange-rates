@@ -14,7 +14,6 @@ class Provider(models.Model):
         default=TypeProvider.MOCK
     )
     default = models.BooleanField()
-    config = JSONField()
 
     def __str__(self):
         return f"{self.provider}: {self.default}"

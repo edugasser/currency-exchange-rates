@@ -4,6 +4,7 @@ from typing import List
 import requests
 from dateutil import parser
 
+from src.app import settings
 from src.currency_exchange.exchange_retriever.exchange_response import \
     ExchangeResponse, CurrencyRate
 from src.currency_exchange.exchange_retriever.exchange_provider import \
@@ -14,9 +15,8 @@ from src.exceptions import ExchangeProviderError
 class FixerProvider(ExchangeProviderInterface):
     endpoint = "http://data.fixer.io/api/{path}"
 
-    def __init__(self, **kwargs):
-        # TODO: to get by enviroment
-        self.api_key = kwargs.get("API_KEY")
+    def __init__(self):
+        self.api_key = settings.API_KEY_FIXER
         if not self.api_key:
             raise ExchangeProviderError(
                 f"Fixer IO: Required API KEY configuration"
