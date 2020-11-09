@@ -2,22 +2,24 @@
 
 # # Collect static files
 echo "Collect static files"
-python app/manage.py collectstatic --noinput
+python src/manage.py collectstatic --noinput
 
 ## Apply database migrations
 echo "Apply database migrations"
-python app/manage.py migrate
+python src/manage.py makemigrations
+python src/manage.py migrate
 
 echo "Initial setup"
-python app/manage.py loadata initial_setup.json
+python src/manage.py loaddata initial_setup.json
+python src/manage.py loaddata initial_setup_user.json
 
 
 ## Start server
 echo "Starting server"
-python app/manage.py runserver 0.0.0.0:8000
+python src/manage.py runserver 0.0.0.0:8000
 
-#while true
-#do
-#    echo "Press [CTRL+C] to stop.."
-#    sleep 1
-#done
+while true
+do
+    echo "Press [CTRL+C] to stop.."
+    sleep 1
+done
