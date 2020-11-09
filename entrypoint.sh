@@ -17,9 +17,3 @@ python src/manage.py loaddata initial_setup_user.json
 ## Start server
 echo "Starting server"
 python src/manage.py runserver 0.0.0.0:8000
-
-while true
-do
-    echo "Press [CTRL+C] to stop.."
-    sleep 1
-done

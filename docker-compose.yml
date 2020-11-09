@@ -29,6 +29,7 @@ services:
       DATABASE_NAME: "test"
       DATABASE_USER: "test"
       DATABASE_PASSWORD: "test"
+      SECRET_KEY: "424e33448b9c83f539af66072d88c79d"
       API_KEY_FIXER: "25772f2f83eae376dc4e972fb7fc2950f1979853"
       DJANGO_ENV: "prod"
 
