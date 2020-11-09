@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from src.currency_exchange.exchange_retriever.exchange_factory_provider import ExchangeFactoryProvider  # noqa
 from src.currency_exchange.exchange_retriever.exchange_provider import \
-    ExchangeProvider
+    ExchangeProvider, ExchangeProviderInterface
 from src.currency_exchange.repository import CurrencyExchangeRepository
 from src.exceptions import ExchangeCurrencyDoesNotExist
 from src.logger import logger, _
@@ -18,10 +18,10 @@ class RetrieveCurrencyExchangeRate(object):
 
     @staticmethod
     def get_exchange_rate_data(
-        source_currency,
-        exchanged_currency,
-        valuation_date,
-        provider
+        source_currency: str,
+        exchanged_currency: str,
+        valuation_date: date,
+        provider: ExchangeProviderInterface
     ) -> Decimal:
         exchange_response = ExchangeProvider(provider).get(
             source_currency,
@@ -49,10 +49,7 @@ class RetrieveCurrencyExchangeRate(object):
                 exchanged_currency,
                 valuation_date
             )
-            logger.info(_("Retrieve exchange from repository:",
-                          valuation_date=valuation_date,
-                          response=currency_rate))
-
+            msg = "Retrieve exchange from repository:"
         except ExchangeCurrencyDoesNotExist:
             # NOTE: maybe we can save in db the rate for future readings.
             provider = self.factory_provider.get()
@@ -62,8 +59,7 @@ class RetrieveCurrencyExchangeRate(object):
                 valuation_date,
                 provider
             )
-            logger.info(_("Retrieve exchange from provider:",
-                          valuation_date=valuation_date,
-                          response=currency_rate))
+            msg = "Retrieve exchange from provider:",
 
+        logger.info(_(msg, valuation_date=valuation_date, response=currency_rate))  # noqa
         return round_decimal(currency_rate)

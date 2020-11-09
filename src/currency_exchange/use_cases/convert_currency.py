@@ -22,7 +22,7 @@ class ConvertCurrency(object):
             currency_exchange_repository
         )
 
-    def validate_currencies(self, origin, target):
+    def validate_currencies(self, origin: str, target: str):
         valid_currencies = self.currency_repository.get_all_currencies()
         if origin not in valid_currencies:
             raise CurrencyDoesNotExist(f"The currency {origin} doesn't exist")

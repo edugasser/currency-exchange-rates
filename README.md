@@ -10,15 +10,15 @@ rates.
 ![alt text](https://github.com/edugasser/currency-exchange-rates/blob/master/dashboard_screenshot.png?raw=true)
 ![alt text](https://github.com/edugasser/currency-exchange-rates/blob/master/doc_screenshot.png?raw=true)
 
-# Use cases
+# ➤ Use cases
   - Retrieve and store daily currency rates. ([update daily rates])
   - List currency rates for a specific time period.([retrieve rates])
   - Calculate amount in a currency exchanged into a different currency.([calculate currency])
   - Retrieve time-weighted rate of return for any given amount invested from a currency into another one from given date until today.([calculate twr])
   - Import currency exchange rates from csv file.([import csv])
-# Versioning
+# ➤ Versioning
 The API could manage different versions.
-# Installation
+# ➤ Installation
 
 Requires [Docker Compose](https://docs.docker.com/compose/install/) and [Docker](https://docs.docker.com/engine/install/ubuntu/) to run.
 
@@ -26,11 +26,11 @@ Requires [Docker Compose](https://docs.docker.com/compose/install/) and [Docker]
 $ docker-compose up
 ```
 
-## API Documentation
+# ➤ API Documentation
 Swagger API documentation
 - http://127.0.0.1:8000/docs/
 
-## Usage
+# ➤ Usage
 The app will setup initial data: 
 > Currency Exchange Rates from 1 year for the different currencies: EUR, USD, GBP, CHF (https://excelrates.com)
 > Admin user: admin/123456789A
@@ -42,7 +42,7 @@ The app will setup initial data:
 - Daily currency exchange rates: `python manage.py update_currency_exchanges`
 - Import CSV: `ImportCurrencyExchangeRates(repository).execute(file_name)`
 
-## Tech
+## ➤ Tech
 Uses a number of open source projects to work properly:
 
 * [Django 2.2.17](https://www.djangoproject.com/) - Django
@@ -50,25 +50,26 @@ Uses a number of open source projects to work properly:
 * [PostgreSQl](https://www.postgresql.org/) - PostgreSQl
 * [Python 3.8](https://www.python.org/downloads/release/python-380/) - Python 3.8
 
-### Development
+### ➤ Development
 ```sh
 $ docker exec -it django sh
 $ cd src
 ```
-#### Tests
+#### ➤ Tests
 ```sh
 $ python manage.py test 
 ```
-#### Coverage
+#### ➤ Coverage
 ```sh
 $ coverage run --source='.' manage.py test
 $ coverage report
 TOTAL                                                                               776     67    91%
 ```
-#### Lint
-```sh
-$ python -m flake8
-```
+# ➤ Improvements
+* To save the consulted currency exchange rates not already in database for future retrievements.
+* To save the currency exchange rates in a in-memory data structure store like Redis to get faster every access.
+* To give the possibility to specify the exchanged currencies in the `historical` and `convert` endpoints.
+
 [StartAdmin](https://www.bootstrapdash.com/product/star-admin-free/)
 
 [import csv]: <https://github.com/edugasser/currency-exchange-rates/blob/master/src/currency_exchange/use_cases/import_currency_exchange_rates.py>

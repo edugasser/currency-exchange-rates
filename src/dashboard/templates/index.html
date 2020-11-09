@@ -28,9 +28,9 @@
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-          <a class="navbar-brand brand-logo" href="index.html">
+          <a class="navbar-brand brand-logo" href="">
             <img src="{% static "assets/images/logo-white.svg" alt="logo" %}"/> </a>
-          <a class="navbar-brand brand-logo-mini" href="index.html">
+          <a class="navbar-brand brand-logo-mini" href="">
             <img src="{% static "assets/images/logo-white.svg" alt="logo"  %}"/> </a>
         </div>
 
@@ -80,7 +80,7 @@
                           <div class="form-group row">
                             <label for="source_currency" class="col-sm-3 col-form-label">Amount</label>
                             <div class="col-sm-9">
-                              <input class="form-control" type="number" id="amount">
+                              <input class="form-control" type="number" id="amount" value="1">
                             </div>
                           </div>
                             <div class="form-group row">
@@ -106,7 +106,7 @@
                             </div>
                           </div>
 
-                          <button type="submit" onClick="convertCurrency();" class="btn btn-success mr-2">Convert</button>
+                          <button type="button" onClick="convertCurrency();" class="btn btn-success mr-2">Convert</button>
                           <label style="background-color:#eee;padding:10px;font-size:18pt" id="amountConverted"></label>
                         </form>
                       </div>
@@ -188,27 +188,26 @@
     <script src="{% static "assets/js/demo_1/dashboard.js"  %}"></script>
     <!-- End custom js for this page-->
 
-
     <script type="text/javascript">
             $("#amountConverted").hide();
-        function convertCurrency() {
-            var source = $("#source_currency").val();
-            var target = $("#target_currency").val();
-            var amount = $("#amount").val();
+      function convertCurrency() {
+        var source = $("#source_currency").val();
+        var target = $("#target_currency").val();
+        var amount = $("#amount").val();
 
-          var requestURL = "/api/v1/convert/"+source+"/"+ target + "/?amount="+amount;
-          const request = new XMLHttpRequest();
-          request.open('GET', requestURL, false);
-          request.send(null);
+        var requestURL = "/api/v1/convert/"+source+"/"+ target + "/?amount="+amount;
+        const request = new XMLHttpRequest();
+        request.open('GET', requestURL, false);
+        request.send(null);
 
-          if (request.status === 200) {
-            var response =  JSON.parse(request.responseText);
-            $("#amountConverted").show();
-            $("#amountConverted").text(response["converted_amount"]);
-          }
-          return {};
-
+        if (request.status === 200) {
+          var response =  JSON.parse(request.responseText);
+          $("#amountConverted").show();
+          $("#amountConverted").text(response["converted_amount"]);
         }
+        return {};
+
+      }
     </script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

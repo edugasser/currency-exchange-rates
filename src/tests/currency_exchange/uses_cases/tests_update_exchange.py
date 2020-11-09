@@ -33,7 +33,7 @@ class UpdateExchangeTestCase(TestCase):
 
         self.repository.save.assert_has_calls(
             [
-                call('EUR', 'USD', 10),
-                call('USD', 'EUR', 10)
+                call('EUR', 'USD', 10, datetime.date.today()),
+                call('USD', 'EUR', 10, datetime.date.today())
             ]
         )

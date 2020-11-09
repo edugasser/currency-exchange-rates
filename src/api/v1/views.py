@@ -1,3 +1,4 @@
+from datetime import date
 from decimal import Decimal
 
 from dateutil.parser import parse
@@ -20,6 +21,7 @@ from src.exceptions import (
     DecimalError,
     ExchangeProviderError
 )
+from src.logger import logger, _
 from src.utils import iter_days
 
 
@@ -33,7 +35,7 @@ class ListCurrencyExchangeRateView(ListAPIView):
         self.currencies = currency_exchange_repository.get_all_currencies()
 
     @staticmethod
-    def validate_params(start, end):
+    def validate_params(start: str, end: str) -> (date, date):
         try:
             date_from = parse(start)
             date_to = parse(end)
@@ -44,13 +46,12 @@ class ListCurrencyExchangeRateView(ListAPIView):
             )
         return date_from, date_to
 
-    def build_node(self, origin, target, day):
+    def build_node(self, origin: str, target: str, day: date) -> dict:
         rate_value = self.retriever.get(
             origin,
             target,
             day
         )
-        rate_value = rate_value
         return {
             "origin_currency": origin,
             "target_currency": target,
@@ -66,11 +67,14 @@ class ListCurrencyExchangeRateView(ListAPIView):
             for target in self.currencies:
                 if origin == target:
                     continue
-                result.append(
-                    self.build_node(origin, target, day)
-                )
-        response = ListCurrencyExchangeResponse(data=result, many=True)
+                try:
+                    result.append(
+                        self.build_node(origin, target, day)
+                    )
+                except ExchangeProviderError as e:
+                    logger.error(_("API List exchanges error:", error=str(e)))
 
+        response = ListCurrencyExchangeResponse(data=result, many=True)
         if not response.is_valid():
             raise serializers.ValidationError(response.errors)
         return Response(response.data)
@@ -81,14 +85,14 @@ class ConvertCurrencyView(RetrieveAPIView):
     serializer_class = CurrencyConvertResponse
 
     @staticmethod
-    def clean_params(params):
+    def clean_params(params: dict) -> Decimal:
         amount = params.get("amount")
         if not amount:
             raise serializers.ValidationError("Required GET param 'amount'")
         return Decimal(amount)
 
     @staticmethod
-    def build_response(currency_converted):
+    def build_response(currency_converted) -> dict:
         response = CurrencyConvertResponse(data={
             "converted_amount": currency_converted.converted_amount,
             "origin_currency": currency_converted.origin,
@@ -130,7 +134,12 @@ class TimeWeightedRateView(RetrieveAPIView):
     serializer_class = TwrResponse
 
     @staticmethod
-    def clean_params(origin, target, date_invested, amount):
+    def clean_params(
+        origin: str,
+        target: str,
+        date_invested: date,
+        amount: Decimal
+    ) -> dict:
         twr_request = TwrRequest(data={
             "origin_currency": origin,
             "target_currency": target,
@@ -146,7 +155,7 @@ class TimeWeightedRateView(RetrieveAPIView):
         return twr_request.data
 
     @staticmethod
-    def build_response(params, twr):
+    def build_response(params: dict, twr: Decimal) -> dict:
         response = TwrResponse(data={
             "origin_currency": params["origin_currency"],
             "target_currency": params["target_currency"],

@@ -15,7 +15,8 @@ class Provider(models.Model):
     default = models.BooleanField()
 
     def __str__(self):
-        return f"{self.provider}: {self.default}"
+        default = "(Default)" if self.default else ""
+        return f"{self.provider} {default}"
 
 
 class Currency(models.Model):

@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db.transaction import atomic
 
 from src.currency_exchange.exchange_retriever.exchange_factory_provider import ExchangeFactoryProvider  # noqa
@@ -23,9 +25,9 @@ class UpdateCurrencyExchangeRate(object):
 
     def update(
         self,
-        source_currency,
-        exchanged_currency,
-        valuation_date
+        source_currency: str,
+        exchanged_currency: str,
+        valuation_date: date
     ):
         rate = RetrieveCurrencyExchangeRate.get_exchange_rate_data(
             source_currency,
@@ -42,7 +44,7 @@ class UpdateCurrencyExchangeRate(object):
         )
 
     @atomic
-    def update_all(self, valuation_date):
+    def update_all(self, valuation_date: date):
         for source_currency, exchanged_currency in self.iter_currencies():
             try:
                 self.update(source_currency, exchanged_currency, valuation_date)  # noqa
