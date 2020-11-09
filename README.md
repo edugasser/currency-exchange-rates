@@ -47,24 +47,30 @@ Uses a number of open source projects to work properly:
 
 * [Django 2.2.17](https://www.djangoproject.com/) - Django
 * [Django Rest Framework 3.12.2](https://www.django-rest-framework.org) - Django Rest Framework
-* [PostgreSQl](https://www.postgresql.org/) - PostgreSQl
+* [PostgreSQL](https://www.postgresql.org/) - PostgreSQL
 * [Python 3.8](https://www.python.org/downloads/release/python-380/) - Python 3.8
 
 ### ➤ Development
 ```sh
-$ docker exec -it django sh
+$ docker-compose exec django sh
 $ cd src
 ```
 #### ➤ Tests
 ```sh
-$ python manage.py test 
+$ docker-compose exec django sh -c 'cd src && python manage.py test'
 ```
 #### ➤ Coverage
 ```sh
-$ coverage run --source='.' manage.py test
-$ coverage report
-TOTAL                                                                               776     67    91%
+$ docker-compose exec django sh -c 'cd src && coverage run --source="." manage.py test'
+$ docker-compose exec django sh -c 'cd src && coverage report' 
+TOTAL  776     67    91%
 ```
+
+#### Lint
+```sh
+$ docker-compose exec django sh -c 'cd src && python -m flake8'
+```
+
 # ➤ Improvements
 * To save the consulted currency exchange rates not already in database for future retrievements.
 * To save the currency exchange rates in a in-memory data structure store like Redis to get faster every access.
