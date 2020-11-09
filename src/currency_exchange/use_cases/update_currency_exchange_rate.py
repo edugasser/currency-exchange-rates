@@ -37,7 +37,8 @@ class UpdateCurrencyExchangeRate(object):
         self.exchange_repository.save(
             source_currency,
             exchanged_currency,
-            rate
+            rate,
+            valuation_date
         )
 
     @atomic
