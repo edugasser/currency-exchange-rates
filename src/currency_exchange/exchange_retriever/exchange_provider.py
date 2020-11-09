@@ -44,19 +44,16 @@ class ExchangeProvider(object):
                 currency,
                 exchanged_currencies
             )
-            logger.info(
-                _("Exchange provider: latest",
-                  valuation_date=valuation_date,
-                  response=response))
         else:
-            logger.info(_("Exchange provider: historical", valuation_date=valuation_date))  # noqa
             response = self.exchange_provider.get_historical(
                 currency,
                 exchanged_currencies,
                 valuation_date
             )
-            logger.info(
-                _("Exchange provider: latest",
-                  valuation_date=valuation_date,
-                  response=response))
+
+        logger.info(
+            _("Exchange provider: latest",
+              valuation_date=valuation_date,
+              response=response))
+
         return response

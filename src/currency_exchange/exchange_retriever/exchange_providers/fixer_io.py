@@ -15,6 +15,7 @@ class FixerProvider(ExchangeProviderInterface):
     endpoint = "http://data.fixer.io/api/{path}"
 
     def __init__(self, **kwargs):
+        # TODO: to get by enviroment
         self.api_key = kwargs.get("API_KEY")
         if not self.api_key:
             raise ExchangeProviderError(

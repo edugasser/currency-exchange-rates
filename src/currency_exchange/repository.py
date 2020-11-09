@@ -45,7 +45,12 @@ class CurrencyExchangeRateForm(ModelForm):
 
     class Meta:
         model = CurrencyExchangeRate
-        fields = ("source_currency", "exchanged_currency", "valuation_date", "rate_value")
+        fields = (
+            "source_currency",
+            "exchanged_currency",
+            "valuation_date",
+            "rate_value"
+        )
 
 
 class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
@@ -60,7 +65,12 @@ class CurrencyExchangeRepositoryDB(CurrencyExchangeRepository):
             raise ExchangeProviderError(f"No Provider created.")
         return provider.provider, provider.config
 
-    def get(self, source_currency, exchanged_currency, valuation_date):
+    def get(
+        self,
+        source_currency: str,
+        exchanged_currency: str,
+        valuation_date: date
+    ) -> Decimal:
         try:
             exchange = CurrencyExchangeRate.objects.get(
                 source_currency__code=source_currency,

@@ -1,0 +1,289 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Star Admin Premium Bootstrap Admin Dashboard Template</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{% static "assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/vendors/iconfonts/ionicons/dist/css/ionicons.css" %}">
+    <link rel="stylesheet" href="{% static "assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css" %}">
+    <link rel="stylesheet" href="{% static "assets/vendors/css/vendor.bundle.base.css" %}">
+    <link rel="stylesheet" href="{% static "assets/vendors/css/vendor.bundle.addons.css" %}">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{% static "assets/css/shared/style.css" %}">
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static "assets/css/demo_1/style.css" %}">
+    <!-- End Layout styles -->
+    <link rel="shortcut icon" href="{% static "assets/images/favicon.png" / %}">
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+          <a class="navbar-brand brand-logo" href="index.html">
+            <img src="{% static "assets/images/logo-white.svg" alt="logo" %}"/> </a>
+          <a class="navbar-brand brand-logo-mini" href="index.html">
+            <img src="{% static "assets/images/logo-white.svg" alt="logo"  %}"/> </a>
+        </div>
+
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-category">Main Menu</li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="pages/forms/basic_elements.html">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Developers</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <!-- Page Title Header Starts-->
+            <div class="row page-title-header">
+              <div class="col-12">
+                <div class="page-header">
+                  <h4 class="page-title">Dashboard</h4>
+                  <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
+                    <ul class="quick-links">
+                      <li><a href="#">Currency Exchange Rates</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-toolbar">
+                  <div class="filter-wrapper">
+                    <select id="currency">
+                      <option>EUR</option>
+                      <option>USD</option>
+                      <option>CHF</option>
+                      <option>GBP</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+             <div class="row">
+              <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title mb-0">Currency Exchange Rates</h4>
+                    <div class="d-flex flex-column flex-lg-row">
+                      <ul class="nav nav-tabs sales-mini-tabs ml-lg-auto mb-4 mb-md-0" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="sales-statistics_switch_1" data-toggle="tab" role="tab" aria-selected="true" onclick="selectDays(7);return false;" href="#">
+                            1W
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="sales-statistics_switch_2" data-toggle="tab" role="tab" aria-selected="false" onclick="selectDays(30);return false;" href="#">1M</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="sales-statistics_switch_3" data-toggle="tab" role="tab" aria-selected="false" onclick="selectDays(30*6);return false;" href="#">6M</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="sales-statistics_switch_4" data-toggle="tab" role="tab" aria-selected="false" onclick="selectDays(365);return false;" href="#">1Y</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div id="line_top_x"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2020 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Only the best <a href="https://www.bootstrapdash.com/" target="_blank"> Bootstrap dashboard </a> templates</span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+      <input type="text" id="startSelected" hidden>
+      <input type="text" id="endSelected" hidden>
+
+    </div>
+
+
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{% static "assets/vendors/js/vendor.bundle.base.js"  %}"></script>
+    <script src="{% static "assets/vendors/js/vendor.bundle.addons.js"  %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="{% static "assets/js/shared/off-canvas.js"  %}"></script>
+    <script src="{% static "assets/js/shared/misc.js"  %}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="{% static "assets/js/demo_1/dashboard.js"  %}"></script>
+    <!-- End custom js for this page-->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      var date = new Date();
+      var last = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
+
+
+
+      google.charts.load('current', {'packages':['line']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      updateDates(last, date);
+
+      function dateToString(d) {
+        month = (d.getMonth() + 1).toString().padStart(2, "0");
+        day   = d.getDate().toString().padStart(2, "0");
+        return d.getFullYear() + "-" + month + "-" + day
+      }
+
+      function selectDays(days) {
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        updateDates(last, date);
+        drawChart();
+      }
+
+      function updateDates(start, end) {
+        $("#startSelected").val(dateToString(start));
+        $("#endSelected").val(dateToString(end));
+      }
+
+      function getCurrencies(response) {
+        var currencies = [];
+        for (var i = 0; i < response.length; i++) {
+            var target = response[i]["target_currency"]
+            if (currencies.indexOf(target) == -1){
+              currencies.push(target)
+            }
+        }
+        return currencies;
+      }
+
+      function getDataPerDays(response) {
+        perDays = {};
+        for (var i = 0; i < response.length; i++) {
+            var target = response[i]["target_currency"]
+            var date = response[i]["valuation_date"]
+            var rate_value = response[i]["rate_value"]
+
+          if (!perDays.hasOwnProperty(date)) {
+            perDays[date] = {};
+          }
+          perDays[date][target] = rate_value;
+        }
+        return perDays;
+      }
+
+      function createChartData(perDay, currencies) {
+        var result = [];
+        for (let date in perDay) {
+          var row = [date];
+          for (var i = 0; i < currencies.length; i++) {
+            var rate = parseFloat(perDay[date][currencies[i]]);
+            row.push(rate)
+          }
+
+          result.push(row);
+        }
+        return result;
+      }
+
+      function processData(response, currencies) {
+        const perDay = getDataPerDays(response);
+        return createChartData(perDay, currencies);
+      }
+
+      function getDataFromAPI(currency, start, end) {
+        var requestURL = "/api/v1/historical/"+currency+"/"+ start + "/" + end + "/";
+        const request = new XMLHttpRequest();
+        request.open('GET', requestURL, false);
+        request.send(null);
+
+        if (request.status === 200) {
+          var response =  JSON.parse(request.responseText);
+          var currencies = getCurrencies(response);
+          var chartData = processData(response, currencies);
+          return {data: chartData, currencies: currencies};
+        }
+        return {};
+      }
+
+      $('#currency').on('change', function() {
+        drawChart();
+      });
+
+      function drawChart() {
+
+        var currency = $( "#currency" ).val();
+        var start = $("#startSelected").val();
+        var end = $("#endSelected").val();
+
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('string', 'Day');
+
+        var apiData = getDataFromAPI(currency, start, end);
+
+        const currencies = apiData.currencies;
+        const rows = apiData.data;
+
+        for (var i = 0; i < currencies.length; i++) {
+          data.addColumn('number', currencies[i]);
+        }
+
+        data.addRows(rows);
+
+        var options = {
+          chart: {
+            title: '',
+            subtitle: 'Currency: '+currency
+          },
+          width: "100%",
+          height: 500,
+          axes: {
+            x: {
+              0: {side: 'top'}
+            }
+          }
+        };
+
+        var chart = new google.charts.Line(document.getElementById('line_top_x'));
+        chart.clearChart();
+        chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+  </script>
+
+  </body>
+</html>

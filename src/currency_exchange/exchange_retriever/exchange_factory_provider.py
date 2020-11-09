@@ -1,4 +1,6 @@
 from src.currency_exchange.constants import TypeProvider
+from src.currency_exchange.exchange_retriever.exchange_provider import \
+    ExchangeProviderInterface
 from src.currency_exchange.exchange_retriever.exchange_providers.fixer_io import \
     FixerProvider
 from src.currency_exchange.exchange_retriever.exchange_providers.mock import \
@@ -12,7 +14,7 @@ class ExchangeFactoryProvider(object):
     def __init__(self, exchange_repository: CurrencyExchangeRepository):
         self.exchange_repository = exchange_repository
 
-    def get(self):
+    def get(self) -> ExchangeProviderInterface:
         provider_code, config = self.exchange_repository.get_active_provider()
 
         if provider_code == TypeProvider.FIXER_IO:
