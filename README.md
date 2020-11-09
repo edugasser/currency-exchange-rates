@@ -66,7 +66,7 @@ $ docker-compose exec django sh -c 'cd src && coverage report'
 TOTAL  776     67    91%
 ```
 
-#### Lint
+#### ➤ Lint
 ```sh
 $ docker-compose exec django sh -c 'cd src && python -m flake8'
 ```
